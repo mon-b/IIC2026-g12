@@ -1,0 +1,354 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h2 {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header p {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+main {
+    width: 100%;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.map-container {
+    flex: 0 0 auto;
+    width: 350px;
+    max-width: 350px;
+    min-width: 250px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+#map {
+    width: 100%;
+    height: auto;
+    cursor: grab;
+}
+
+#map:active {
+    cursor: grabbing;
+}
+
+.airport-marker {
+    stroke: #333;
+    stroke-width: 1.5;
+    cursor: pointer;
+    transition: stroke-width 0.2s ease, stroke 0.2s ease;
+}
+
+.airport-marker:hover {
+    stroke-width: 3;
+    stroke: #000;
+}
+
+.country-outline {
+    fill: rgba(255, 255, 255, 0.8);
+    stroke: #34495e;
+    stroke-width: 1;
+}
+
+.legend {
+    flex: 0 0 auto;
+    width: 250px;
+    max-width: 250px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    padding: 30px 25px;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+}
+
+.legend h3 {
+    margin-bottom: 25px;
+    color: #ffffff;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.legend-scale {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    align-items: center;
+}
+
+.legend-scale svg {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+.legend-gradient-rect {
+    fill: url(#legend-gradient);
+    stroke: rgba(255, 255, 255, 0.6);
+    stroke-width: 2;
+}
+
+.legend-label {
+    font-size: 14px;
+    fill: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.zoom-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.zoom-btn, .reset-btn {
+    width: clamp(35px, 5vw, 40px);
+    height: clamp(35px, 5vw, 40px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    font-size: clamp(16px, 3vw, 20px);
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    transition: all 0.2s ease;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.reset-btn {
+    font-size: clamp(14px, 2.5vw, 16px);
+    margin-top: 10px;
+}
+
+.zoom-btn:hover, .reset-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.05);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5);
+}
+
+.zoom-btn:active, .reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive breakpoints */
+
+/* Large desktop screens */
+@media (min-width: 1200px) {
+    .content-wrapper {
+        gap: 30px;
+    }
+    
+    .map-container {
+        width: 380px;
+        max-width: 380px;
+    }
+}
+
+/* Medium screens (tablets landscape) */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .container {
+        padding: 15px;
+        max-width: 900px;
+    }
+    
+    .content-wrapper {
+        gap: 15px;
+    }
+    
+    .map-container {
+        width: 320px;
+        max-width: 320px;
+    }
+    
+    .legend {
+        width: 220px;
+        max-width: 220px;
+        padding: 25px 20px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        margin-bottom: 20px;
+    }
+    
+    .content-wrapper {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .map-container {
+        width: 90%;
+        max-width: 300px;
+        min-width: 280px;
+        padding: 15px;
+    }
+    
+    .legend {
+        width: 90%;
+        max-width: 350px;
+        min-width: 280px;
+        padding: 25px 20px;
+        order: 2;
+        align-self: auto; /* Reset align-self on mobile */
+    }
+    
+    .legend-scale svg {
+        max-width: 150px;
+        margin: 0 auto;
+        height: 300px;
+    }
+    
+    .zoom-controls {
+        top: 15px;
+        right: 15px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .container {
+        padding: 8px;
+    }
+    
+    .map-container {
+        width: 95%;
+        max-width: 280px;
+        min-width: 250px;
+        padding: 12px;
+    }
+    
+    .legend {
+        width: 95%;
+        max-width: 280px;
+        min-width: 250px;
+        padding: 20px 15px;
+    }
+    
+    .zoom-controls {
+        top: 12px;
+        right: 12px;
+        gap: 3px;
+    }
+    
+    .zoom-btn, .reset-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .reset-btn {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .airport-marker {
+        stroke-width: 1;
+    }
+    
+    .airport-marker:hover {
+        stroke-width: 2;
+    }
+    
+    .country-outline {
+        stroke-width: 0.5;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .zoom-controls {
+        display: none;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .content-wrapper {
+        flex-direction: row;
+        gap: 20px;
+    }
+    
+    .map-container {
+        background: white;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .legend {
+        background: white;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
