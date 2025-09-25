@@ -1,0 +1,22 @@
+﻿codigo,ciudad,region,nombre_aeropuerto,lat,lon,ops_2019,ops_2020,var_pct_20_vs_19
+SCHR,Cochrane,Aysén,Aeródromo de Cochrane,-47.24293119835495,-72.58892503596252,806,203,-74.81
+SCGZ,Puerto Williams,Magallanes,Aeródromo: Guardiamarina Zañartu,-54.93086569312752,-67.63160331411716,1457,424,-70.9
+SCFM,Porvenir,Magallanes,Aeródromo de Porvenir Capitán Fuentes Martínez,-53.253372624516444,-70.32011208729278,1980,623,-68.54
+SCES,Diego de Almagro,Atacama,Aeródromo Ricardo García Posada,-26.313054899402896,-69.75233843286244,431,165,-61.72
+SCFT,Futaleufú,Los Lagos,Aeródromo Futalefú,-43.18874196931435,-71.85219883205548,428,180,-57.94
+SCAT,Caldera,Atacama,Aeropuerto Desierto de Atacama,-27.264233307489533,-70.77419497885195,5171,2251,-56.47
+SCAR,Arica,Arica y Parinacota,Aeropuerto Internacional Chacalluta,-18.34899569929852,-70.33546644662303,7709,3478,-54.88
+SCCI,Punta Arenas,Magallanes,Aeropuerto Internacional Carlos Ibáñez Del Campo,-53.00393114864799,-70.84696571611575,13726,6519,-52.51
+SCEL,Pudahuel,Región Metropolitana,Aeropuerto Internacional Arturo Merino Benítez,-33.38955543914176,-70.79439147489053,174238,84083,-51.74
+SCCF,Calama,Antofagasta,Aeropuerto El Loa Calama,-22.495323226908127,-68.9074228722131,16450,8958,-45.54
+SCTE,Puerto Montt,Los Lagos,Aeropuerto El Tepual,-41.43304569037373,-73.09869896098883,16197,8901,-45.05
+SCRD,Valparaiso,Valparaíso,Aeródromo Rodelillo,-33.066207408742336,-71.5578278902477,15307,8444,-44.84
+SCQP,Freire,La Araucanía,Aeropuerto Araucanía,-38.926989996093134,-72.6469068476298,9720,5565,-42.75
+SCJO,Osorno,Los Lagos,Aeródromo Cañal Bajo Carlos Hott Siebert,-40.602789692561686,-73.05988147601408,4305,2613,-39.3
+SCDA,Iquique,Tarapacá,Aeropuerto Internacional Diego Aracena,-20.547567518215498,-70.1786134753927,15992,10442,-34.7
+SCFA,Antofagasta,Antofagasta,Aeropuerto Andrés Sabella Gálvez,-23.44855455066289,-70.44095794646095,17289,12125,-29.87
+SCSE,La Serena,Coquimbo,Aeropuerto La Florida,-29.916768798553967,-71.20378768853867,13783,10074,-26.91
+SCIE,Concepción,Biobío,Aeropuerto Internacional Carriel Sur,-36.776710069449095,-73.05984073054904,23648,18023,-23.79
+SCCY,Coyhaique,Aysén,Aeropuerto Teniente Vidal,-45.593728230421895,-72.10550315705474,3050,2987,-2.07
+SCNT,Natales,Magallanes,Aeropuerto Teniente Julio Gallardo,-51.670619168993795,-72.52574095482895,625,678,8.48
+SCGE,Los Ángeles,Biobío,Aeródromo María Dolores,-37.401475458660556,-72.42475838818861,4804,5221,8.68

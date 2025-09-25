@@ -9,7 +9,7 @@ let projection, path, svg, mapGroup, zoom, currentWidth, currentHeight;
 // loading and process CSV data
 async function loadAirportData() {
     try {
-        const csvText = await d3.text("domestic_air_ops.csv");
+        const csvText = await d3.text("air_ops.csv");
         const csvData = d3.csvParse(csvText);
         
         airports = csvData.map(d => {
@@ -23,6 +23,9 @@ async function loadAirportData() {
             
             return {
                 codigo: d.codigo,
+                nombre_aeropuerto: d.nombre_aeropuerto,
+                ciudad: d.ciudad,
+                region: d.region,
                 lat: lat,
                 lon: lon,
                 ops_2019: +d.ops_2019,
@@ -98,17 +101,7 @@ function getMapDimensions() {
 // creating tooltip
 function createTooltip() {
     return d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("position", "absolute")
-        .style("padding", "12px")
-        .style("background", "rgba(0, 0, 0, 0.8)")
-        .style("color", "white")
-        .style("border-radius", "8px")
-        .style("font-size", "14px")
-        .style("font-family", "Arial, sans-serif")
-        .style("pointer-events", "none")
-        .style("opacity", 0)
-        .style("z-index", 1000);
+        .attr("class", "tooltip");
 }
 
 // initializing the map
@@ -202,17 +195,55 @@ function drawMap(world, tooltip) {
         .attr("r", markerSize)
         .attr("fill", d => colorScale(d.reduction_pct))
         .on("mouseover", function(event, d) {
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
-            
+            // Set content first
             tooltip.html(`
-                <strong>${d.codigo}</strong><br/>
-                Se redujo de ${d.ops_2019.toLocaleString()} a ${d.ops_2020.toLocaleString()} operaciones<br/>
-                <strong>Reducción de: ${d.reduction_pct.toFixed(1)}%</strong>
-            `)
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 28) + "px");
+                <div class="tooltip-content">
+                    <div class="tooltip-airport">
+                        ${d.nombre_aeropuerto}
+                    </div>
+                    <div class="tooltip-location">
+                        ${d.ciudad}, ${d.region} • ${d.codigo}
+                    </div>
+                    <div class="tooltip-ops">
+                        <span>2019:</span>
+                        <span class="tooltip-ops-value">${d.ops_2019.toLocaleString()}</span>
+                    </div>
+                    <div class="tooltip-ops">
+                        <span>2020:</span>
+                        <span class="tooltip-ops-value">${d.ops_2020.toLocaleString()}</span>
+                    </div>
+                    <div class="tooltip-reduction">
+                        ↓ ${d.reduction_pct.toFixed(1)}% reducción
+                    </div>
+                </div>
+            `);
+
+            // Calculate positioning
+            const tooltipWidth = window.innerWidth <= 480 ? 200 : 
+                                window.innerWidth <= 768 ? 220 : 240;
+            const leftPosition = Math.max(10, event.pageX - tooltipWidth - 10);
+
+            // Temporarily show to measure height
+            tooltip.style("opacity", 0)
+                  .style("visibility", "visible")
+                  .style("left", leftPosition + "px")
+                  .style("top", "0px");
+
+            const actualHeight = tooltip.node().offsetHeight;
+
+            // Smart vertical positioning
+            let topPosition;
+            if (event.pageY + actualHeight + 20 > window.innerHeight) {
+                topPosition = Math.max(10, event.pageY - actualHeight - 10);
+            } else {
+                topPosition = event.pageY + 15;
+            }
+
+            // Final positioning and animate in
+            tooltip.style("top", topPosition + "px")
+                  .transition()
+                  .duration(200)
+                  .style("opacity", 0.9);
         })
         .on("mouseout", function(d) {
             tooltip.transition()

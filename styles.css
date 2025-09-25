@@ -352,3 +352,104 @@ main {
         border: 1px solid #ccc;
     }
 }
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.1); /* Darker background for better contrast */
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1000;
+    width: 240px; /* Fixed consistent width */
+    box-sizing: border-box;
+    word-wrap: break-word;
+    transition: opacity 0.2s ease;
+}
+
+.tooltip-content {
+    padding: 16px;
+}
+
+.tooltip-airport {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.2;
+}
+
+.tooltip-location {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+}
+
+.tooltip-ops {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: space-between;
+}
+
+.tooltip-ops-value {
+    font-weight: 500;
+}
+
+.tooltip-reduction {
+    font-weight: 700; /* Bolder text */
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #dc354688 0%, #c823336a 100%); /* Gradient for depth */
+    border-radius: 8px;
+    border: 1px solid #bd2130;
+    box-shadow: 0 3px 12px rgba(220, 53, 69, 0.4);
+    letter-spacing: 0.2px; /* Slight letter spacing for readability */
+}
+
+/* Responsive tooltip - only size changes, width stays consistent */
+@media (max-width: 768px) {
+    .tooltip {
+        width: 220px; /* Slightly smaller but still consistent */
+    }
+    
+    .tooltip-content {
+        padding: 14px;
+    }
+    
+    .tooltip-airport {
+        font-size: 14px;
+    }
+    
+    .tooltip-location {
+        font-size: 11px;
+    }
+    
+    .tooltip-ops {
+        font-size: 12px;
+    }
+    
+    .tooltip-reduction {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tooltip {
+        width: 200px; /* Even smaller screens but still consistent */
+    }
+    
+    .tooltip-content {
+        padding: 12px;
+    }
+}
