@@ -1,39 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impacto del COVID-19 en el sector aéreo chileno</title>
+    <title>Impacto del COVID-19 en la Aviación Chilena</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h2>Impacto del COVID-19 en el sector aéreo chileno</h2>
-            <p>Reducción de operaciones por aeropuerto: análisis 2019-2020</p>
-
+            <h1>El Colapso y Recuperación de la Aviación Chilena</h1>
+            <p class="subtitle">Cómo COVID-19 devastó el tráfico aéreo y el camino desigual de regreso</p>
         </header>
-        
-        <main>
-            <div class="content-wrapper">
-                <div class="map-container">
-                    <div class="zoom-controls">
-                        <button id="zoom-in" class="zoom-btn">+</button>
-                        <button id="zoom-out" class="zoom-btn">−</button>
-                        <button id="reset-zoom" class="reset-btn">⌂</button>
-                    </div>
-                    <svg id="map"></svg>
+
+        <div class="section">
+            <h2 class="section-title">Línea de Tiempo: Operaciones Mensuales Nacionales</h2>
+            <p class="section-subtitle">De crecimiento sostenido (2015-2019) al colapso abrupto en marzo 2020</p>
+            <div id="timeline"></div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #4fc3f7;"></div>
+                    <span>Crecimiento Pre-COVID (2015-2019)</span>
                 </div>
-                
-                <div class="legend">
-                    <h3>Reducción %</h3>
-                    <div class="legend-scale"></div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ef5350;"></div>
+                    <span>Colapso (2020-2021)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #66bb6a;"></div>
+                    <span>Recuperación (2022-2025)</span>
                 </div>
             </div>
-        </main>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Los Números</h2>
+            <div class="stat-grid" id="stats"></div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Aeropuerto por Aeropuerto: La Recuperación Desigual</h2>
+            <p class="section-subtitle">Top 20 aeropuertos según volumen 2019 — mostrando evolución desde 2015</p>
+            <div id="comparison-grid">
+                <div class="year-panel year-2015">
+                    <h3>2015: Línea Base</h3>
+                    <div class="airport-bars" id="bars-2015"></div>
+                </div>
+                <div class="year-panel year-2019">
+                    <h3>2019: Pre-COVID</h3>
+                    <div class="airport-bars" id="bars-2019"></div>
+                </div>
+                <div class="year-panel year-2020">
+                    <h3>2020: Colapso</h3>
+                    <div class="airport-bars" id="bars-2020"></div>
+                </div>
+                <div class="year-panel year-2024">
+                    <h3>2024: Recuperación</h3>
+                    <div class="airport-bars" id="bars-2024"></div>
+                </div>
+                <div class="year-panel year-2025">
+                    <h3>2025: Actual</h3>
+                    <div class="airport-bars" id="bars-2025"></div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <script src="map.js"></script>
+
+    <script src="visualization.js"></script>
 </body>
 </html>

@@ -1,0 +1,410 @@
+Ciudad,Region,OACI,IATA,Nombre,Tipo
+Antofagasta,Antofagasta,SCFA,ANF,Aeropuerto Internacional Andrés Sabella,Aeropuertos (con vuelos comerciales)
+Arica,Arica y Parinacota,SCAR,ARI,Aeropuerto Internacional Chacalluta,Aeropuertos (con vuelos comerciales)
+Balmaceda (Coyhaique),Aysén,SCBA,BBA,Aeródromo Balmaceda,Aeropuertos (con vuelos comerciales)
+Calama,Antofagasta,SCCF,CJC,Aeródromo El Loa,Aeropuertos (con vuelos comerciales)
+Caldera (Copiapó),Atacama,SCAT,CPO,Aeródromo Desierto de Atacama,Aeropuertos (con vuelos comerciales)
+Dalcahue (Castro),Los Lagos,SCPQ,MHC,Aeródromo Mocopulli,Aeropuertos (con vuelos comerciales)
+Freire (Temuco),La Araucanía,SCQP,ZCO,Aeródromo La Araucanía,Aeropuertos (con vuelos comerciales)
+Iquique,Tarapacá,SCDA,IQQ,Aeropuerto Internacional Diego Aracena,Aeropuertos (con vuelos comerciales)
+Isla de Pascua,Valparaíso,SCIP,IPC,Aeropuerto Internacional Mataveri,Aeropuertos (con vuelos comerciales)
+La Serena,Coquimbo,SCSE,LSC,Aeródromo La Florida,Aeropuertos (con vuelos comerciales)
+Mariquina (Valdivia),Los Ríos,SCVD,ZAL,Aeródromo Pichoy,Aeropuertos (con vuelos comerciales)
+Natales,Magallanes,SCNT,PNT,Aeródromo Teniente Julio Gallardo,Aeropuertos (con vuelos comerciales)
+Osorno,Los Lagos,SCJO,ZOS,Aeródromo Cañal Bajo Carlos Hott Siebert,Aeropuertos (con vuelos comerciales)
+Puerto Montt,Los Lagos,SCTE,PMC,Aeropuerto Internacional El Tepual,Aeropuertos (con vuelos comerciales)
+Punta Arenas,Magallanes,SCCI,PUQ,Aeropuerto Internacional Presidente Carlos Ibáñez del Campo,Aeropuertos (con vuelos comerciales)
+Pudahuel (Santiago),Metropolitana,SCEL,SCL,Aeropuerto Internacional Arturo Merino Benítez,Aeropuertos (con vuelos comerciales)
+Talcahuano (Concepción),Bío-Bío,SCIE,CCP,Aeródromo Carriel Sur,Aeropuertos (con vuelos comerciales)
+Concón (Valparaíso),Valparaíso,SCVM,KNA,Base Aeronaval y Aeropuerto Concón,Bases aéreas (con fuerza aérea o militar)
+Quintero,Valparaíso,SCUO,QTR,Base Aérea de Quintero,Bases aéreas (con fuerza aérea o militar)
+Rancagua,O'Higgins,SCRG,QRC,Aeródromo de la Independencia,Bases aéreas (con fuerza aérea o militar)
+El Bosque (Santiago),Metropolitana,SCBQ,BQE,Base Aérea El Bosque,Bases aéreas (con fuerza aérea o militar)
+Arica,Arica y Parinacota,SCAE,,Aeródromo El Buitre,Bases aéreas (con fuerza aérea o militar)
+Padre Las Casas,La Araucanía,SCTC,PZS,Base Aérea Maquehue,Bases aéreas (con fuerza aérea o militar)
+Isla San Felix,Valparaíso,SCFX,,Base aeronaval,Bases aéreas (con fuerza aérea o militar)
+Curaco de Vélez,Los Lagos,SCAH,,Aeródromo Tolquién,Aeródromos
+Algarrobo,Valparaíso,SCSG,,Aeródromo San Gerónimo,Aeródromos
+Alhué,Metropolitana,SCAF,,Aeródromo San Alfonso,Aeródromos
+Alto del Carmen,Atacama,SCTQ,,Aeródromo Tres Quebradas,Aeródromos
+Ancud,Los Lagos,SCWF,,Aeródromo Faro Punta Corona,Aeródromos
+Ancud,Los Lagos,SCAC,ZUD,Aeródromo Pupelde,Aeródromos
+Angol,La Araucanía,SCGO,,Aeródromo Los Confines,Aeródromos
+Antofagasta,Antofagasta,SCGU,,Aeródromo Aguas Blancas,Aeródromos
+Antofagasta,Antofagasta,SCOO,,Aeródromo Cerro Coloso,Aeródromos
+Antofagasta,Antofagasta,SCLE,,Aeródromo La Escondida,Aeródromos
+Antofagasta,Antofagasta,SCPA,,Aeródromo Paranal,Aeródromos
+Antofagasta,Antofagasta,SCWU,,Aeródromo Universidad del Norte,Aeródromos
+Arauco,Biobío,SCLY,,Aeródromo La Playa,Aeródromos
+Archipiélago Juan Fernández,Valparaíso,SCIR,,Aeródromo Robinson Crusoe,Aeródromos
+Ayacara,Los Lagos,SCAY,,Aeródromo Ayacara,Aeródromos
+Aysén,Aysén,SCQO,,Aeródromo Quitralco,Aeródromos
+Aysén,Aysén,SCEX,,Aeródromo Río Exploradores,Aeródromos
+Bahía Inútil,Magallanes,SCBI,DPB,Aeródromo Pampa Guanaco,Aeródromos
+Bahía Posesión,Magallanes,SCBS,,Aeródromo Bahía Posesión,Aeródromos
+Bulnes,Ñuble,SCUL,,Aeródromo El Litral,Aeródromos
+Bulnes,Ñuble,SCUR,,Aeródromo Rucamalén,Aeródromos
+Cabildo,Valparaíso,SCDL,,Aeródromo El Algarrobo,Aeródromos
+Caldera,Atacama,SCCL,,Aeródromo Caldera,Aeródromos
+Caleta Gonzalo,Los Lagos,SCGN,,Aeródromo Caleta Gonzalo,Aeródromos
+Caleta Hueicolla,Los Ríos,SCHK,,Aeródromo Hueicolla,Aeródromos
+Cañete,Biobío,SCNM,,Aeródromo Las Misiones,Aeródromos
+Cartagena,Valparaíso,SCRS,,Aeródromo El Rosario,Aeródromos
+Casablanca,Valparaíso,SCTW,,Aeródromo El Tapihue,Aeródromos
+Casablanca,Valparaíso,SCFL,,Aeródromo Fundo Loma Larga,Aeródromos
+Casablanca,Valparaíso,SCCS,,Aeródromo Santa Rita,Aeródromos
+Casablanca,Valparaíso,SCVA,,Aeródromo Viñamar,Aeródromos
+Castro,Los Lagos,SCST,WCA,Aeródromo Gamboa,Aeródromos
+Cauquenes,Maule,SCCN,,Aeródromo Alto Cauquenes,Aeródromos
+Cauquenes,Maule,SCCE,,Aeródromo El Arenal,Aeródromos
+Cauquenes,Maule,SCCA,,Aeródromo El Boldo,Aeródromos
+Cerro Castillo,Magallanes,SCPY,,Aeródromo Cerro Castillo,Aeródromos
+Cerro Sombrero,Magallanes,SCSB,SMB,Aeródromo Franco Bianco,Aeródromos
+Chaitén,Los Lagos,SCTN,WCH,Aeródromo de Chaitén,Aeródromos
+Chaitén,Los Lagos,SCHD,,Aeródromo Chumildén,Aeródromos
+Chaitén,Los Lagos,SCEA,,Aeródromo El Amarillo,Aeródromos
+Chaitén,Los Lagos,SCLR,,Aeródromo Los Alerces,Aeródromos
+Chaitén,Los Lagos,SCPN,,Aeródromo Pillán,Aeródromos
+Chaitén,Los Lagos,SCUI,,Aeródromo Pumalín,Aeródromos
+Chaitén,Los Lagos,SCHT,,Aeródromo Tic Toc,Aeródromos
+Chaitén,Los Lagos,SCDH,,Aeródromo Vodudahue,Aeródromos
+Chaitén,Los Lagos,SCNC,,Aeródromo Santa Bárbara Ruta 7,Aeródromos
+Chañaral,Atacama,SCRA,CNR,Aeródromo Chañaral,Aeródromos
+Chépica,O'Higgins,SCEK,,Aeródromo Chépica,Aeródromos
+Chile Chico,Aysén,SCCC,CCH,Aeródromo Chile Chico,Aeródromos
+Chillán,Ñuble,SCFK,,Aeródromo Fundo El Carmen,Aeródromos
+Chillán,Ñuble,SCCH,YAI,Aeródromo General Bernardo O'Higgins,Aeródromos
+Chillán,Ñuble,SCAV,,Aeródromo La Vertiente,Aeródromos
+Cholguán,Ñuble,SCGS,,Aeródromo Siberia,Aeródromos
+Chonchi,Los Lagos,SCFS,,Aeródromo Los Calafates,Aeródromos
+Choshuenco,Los Ríos,SCCM,,Aeródromo Molco,Aeródromos
+Choshuenco,Los Ríos,SCHN,,Aeródromo Chan Chan,Aeródromos
+Chuquicamata,Antofagasta,SCKU,QUI,Aeródromo Chuquicamata,Aeródromos
+Cobquecura,Ñuble,SCQR,,Aeródromo Los Morros,Aeródromos
+Cochamó,Los Lagos,SCBT,,Aeródromo Rincón Bonito,Aeródromos
+Cochamó,Los Lagos,SCKM,,Aeródromo Cochamó,Aeródromos
+Cochrane,Aysén,SCVS,,Aeródromo Lago Vargas,Aeródromos
+Cochrane,Aysén,SCHR,LGR,Aeródromo Cochrane,Aeródromos
+Cochrane,Aysén,SCAL,,Aeródromo Valchac,Aeródromos
+Coelemu,Ñuble,SCKT,,Aeródromo Torreón,Aeródromos
+Coihueco,Ñuble,SCPI,,Aeródromo Pullami,Aeródromos
+Colina,Metropolitana,SCHC,,Aeródromo Chicureo,Aeródromos
+Colina,Metropolitana,SCVH,,Aeródromo La Victoria de Chacabuco,Aeródromos
+Colina,Metropolitana,SCPD,,Aeródromo Peldehue,Aeródromos
+Collipulli,La Araucanía,SCKO,,Aeródromo Agua Buena,Aeródromos
+Combarbalá,Coquimbo,SCCB,,Aeródromo Pedro Villarroel,Aeródromos
+Combarbalá,Coquimbo,SCCG,,Aeródromo La Pelícana,Aeródromos
+Coquimbo,Coquimbo,SCCQ,,Aeródromo Tambillos,Aeródromos
+Constitución,Maule,SCCT,,Aeródromo Quivolgo,Aeródromos
+Contao,Los Lagos,SCCK,,Aeródromo Contao,Aeródromos
+Copiapó,Atacama,SCPS,,Aeródromo Perales,Aeródromos
+Copiapó,Atacama,SCHA,,Aeródromo Chamonate,Aeródromos
+Diego de Almagro,Atacama,SCEI,,Aeródromo Potrerillos,Aeródromos
+Caleta Chañaral de Aceituno,Atacama,SCGV,,Aeródromo Punta Gaviota,Aeródromos
+Cumpeo,Maule,SCUM,,Aeródromo La Obra,Aeródromos
+Cumpeo,Maule,SCUP,,Aeródromo Lontuecito,Aeródromos
+Cunco,La Araucanía,SCGY,,Aeródromo Los Guayes,Aeródromos
+Cunco,La Araucanía,SCKC,,Aeródromo Roberto Chávez,Aeródromos
+Cunco,La Araucanía,SCLK,,Aeródromo Lago Colico,Aeródromos
+Cuncumén,Coquimbo,SCNK,,Aeródromo Los Pelambres,Aeródromos
+Curacautín,La Araucanía,SCAI,,Aeródromo de Curacautín,Aeródromos
+Curacaví,Metropolitana,SCCV,,Aeródromo Curacaví,Aeródromos
+Curepto,Maule,SCZR,,Aeródromo Los Zorrillos de Tonlemu,Aeródromos
+Curicó,Maule,SCIC,ZCQ,Aeródromo General Freire,Aeródromos
+Curicó,Maule,SCKI,,Aeródromo Los Lirios,Aeródromos
+Curicó,Maule,SCTM,,Aeródromo La Montaña,Aeródromos
+Coyhaique,Aysén,SCCY,GXQ,Aeródromo Teniente Vidal,Aeródromos
+Duao,Maule,SCDM,,Aeródromo San Damián,Aeródromos
+Duqueco,Biobío,SCDQ,,Aeródromo San Lorenzo,Aeródromos
+El Manzano,O'Higgins,SCMZ,,Aeródromo Marina de Rapel,Aeródromos
+El Salvador,Atacama,SCES,ESR,Aeródromo Ricardo García Posada,Aeródromos
+Entrada Baker,Aysén,SCEB,,Aeródromo Entrada Baker,Aeródromos
+Entrada Mayer,Aysén,SCEY,,Aeródromo Entrada Mayer,Aeródromos
+Estación Chañar,Coquimbo,SCEC,,Aeródromo Pelícano,Aeródromos
+Fachinal,Aysén,SCFC,,Aeródromo Fachinal,Aeródromos
+Freire,La Araucanía,SCSU,,Aeródromo Santa Lucía,Aeródromos
+Freirina,Atacama,SCFF,,Aeródromo Freirina,Aeródromos
+Frutillar,Los Lagos,SCAA,,Aeródromo Añorada,Aeródromos
+Frutillar,Los Lagos,SCEV,,Aeródromo El Avellano,Aeródromos
+Frutillar,Los Lagos,SCFI,,Aeródromo Fundo Tehuén,Aeródromos
+Frutillar,Los Lagos,SCFR,FRT,Aeródromo Frutillar,Aeródromos
+Futaleufú,Los Lagos,SCFT,FFU,Aeródromo Futaleufú,Aeródromos
+Futrono,Los Ríos,SCFU,,Aeródromo Loncopan,Aeródromos
+Futrono,Los Ríos,SCGF,,Aeródromo Golfo Azul,Aeródromos
+Hualaihué,Los Lagos,SCHW,,Aeródromo Hualaihué,Aeródromos
+Hualaihué,Los Lagos,SCRN,,Aeródromo Río Negro,Aeródromos
+Hualañé,Maule,SCOI,,Aeródromo Los Coipos,Aeródromos
+Huasco,Atacama,SCHU,,Aeródromo Gran Cañón,Aeródromos
+Huépil,Biobío,SCHE,,Aeródromo Rucamanqui,Aeródromos
+Illapel,Coquimbo,SCIL,,Aeródromo Aucó,Aeródromos
+Illapel,Coquimbo,SCRX,,Aeródromo Pintacura,Aeródromos
+Illapel,Coquimbo,SCUU,,Aeródromo El Peral,Aeródromos
+Isla Apiao,Los Lagos,SCIA,,Aeródromo Isla Apiao,Aeródromos
+Isla Butachauques,Los Lagos,SCIB,,Aeródromo Butachauques,Aeródromos
+Isla Dawson,Magallanes,SCDW,,Aeródromo Almirante Schroeders,Aeródromos
+Isla de Maipo,Metropolitana,SCVT,,Aeródromo Viña Tarapacá,Aeródromos
+Isla Grande de Tierra del Fuego,Magallanes,SCIT,,Aeródromo Iván Martínez,Aeródromos
+Isla Las Huichas,Aysén,SCIH,,Aeródromo Caleta Andrade,Aeródromos
+Isla Mocha,Biobío,SCHM,,Aeródromo Punta El Saco,Aeródromos
+Isla Mocha,Biobío,SCIM,,Aeródromo Isla Mocha,Aeródromos
+Isla Navarino,Magallanes,SCNY,,Aeródromo Yendegaia,Aeródromos
+Isla Quenac,Los Lagos,SCQE,,Aeródromo Quenac,Aeródromos
+Isla Rey Jorge,Magallanes,SCRM,TNM,Aeródromo Teniente Rodolfo Marsh Martin,Aeródromos
+Isla Santa María,Biobío,SCIS,,Aeródromo Puerto Sur,Aeródromos
+Isla Talcán,Los Lagos,SCIK,,Aeródromo Isla Talcán,Aeródromos
+La Junta,Los Lagos,SCLJ,,Aeródromo La Junta,Aeródromos
+La Ligua,Valparaíso,SCLQ,,Aeródromo Diego Portales,Aeródromos
+La Unión,Los Ríos,SCVV,,Aeródromo Los Maitenes de Villa Vieja,Aeródromos
+La Unión,Los Ríos,SCZB,,Aeródromo Pozo Brujo,Aeródromos
+La Unión,Los Ríos,SCGA,,Aeródromo Punta Galera,Aeródromos
+Lago Brown,Aysén,SCBR,,Aeródromo Lago Brown,Aeródromos
+Lago Caburgua,La Araucanía,SCKB,,Aeródromo Llolle Norte,Aeródromos
+Lago Ranco,Los Ríos,SCAQ,,Aeródromo Arquilhué,Aeródromos
+Lago Ranco,Los Ríos,SCXR,,Aeródromo Las Bandurrias,Aeródromos
+Lago Rapel,O'Higgins,SCSO,,Aeródromo Costa del Sol,Aeródromos
+Lago Verde,Aysén,SCBC,,Aeródromo Cacique Blanco,Aeródromos
+Lago Verde,Aysén,SCVE,,Aeródromo Lago Verde,Aeródromos
+Laguna San Rafael,Aysén,SCRF,,Aeródromo Laguna San Rafael,Aeródromos
+Lampa,Metropolitana,SCHL,,Aeródromo Hacienda Lipangue,Aeródromos
+Lampa,Metropolitana,SCKL,,Aeródromo Lipangui,Aeródromos
+Las Tacas,Coquimbo,SCQT,,Aeródromo Las Tacas,Aeródromos
+Lautaro,La Araucanía,SCLS,,Aeródromo Esperanza,Aeródromos
+Lautaro,La Araucanía,SCLA,,Aeródromo General Tovarías,Aeródromos
+Lebu,Biobío,SCLB,,Aeródromo Los Pehuenches,Aeródromos
+Licantén,Maule,SCKN,,Aeródromo Licancel,Aeródromos
+Linares,Maule,SCAV,,Aeródromo Achibueno,Aeródromos
+Linares,Maule,SCAV,,Aeródromo Fundo La Caña,Aeródromos
+Linares,Maule,SCLN,ZLR,Aeródromo Municipal de Linares,Aeródromos
+Litueche,O'Higgins,SCTU,,Aeródromo Litueche,Aeródromos
+Litueche,O'Higgins,SCLT,,Aeródromo Topocalma,Aeródromos
+Llanada Grande,Los Lagos,SCLD,,Aeródromo Llanada Grande,Aeródromos
+Llico,Maule,SCLI,,Aeródromo Torca,Aeródromos
+Llifén,Los Ríos,SCLF,,Aeródromo Calcurrupe,Aeródromos
+Llifén,Los Ríos,SCIF,,Aeródromo Chollinco,Aeródromos
+Lolol,O'Higgins,SCAO,,Aeródromo Palo Alto,Aeródromos
+Longaví,Maule,SCMS,,Aeródromo Las Moras,Aeródromos
+Longaví,Maule,SCUT,,Aeródromo Verfrut Sur,Aeródromos
+Icalma,La Araucanía,SCQI,,Aeródromo Icalma,Aeródromos
+Lonquimay,La Araucanía,SCCU,,Aeródromo Lolco,Aeródromos
+Lonquimay,La Araucanía,SCQY,,Aeródromo Villa Portales,Aeródromos
+Los Andes,Valparaíso,SCAN,LOB,Aeródromo San Rafael,Aeródromos
+Los Ángeles,Biobío,SCGH,,Aeródromo Cholguahue,Aeródromos
+Los Ángeles,Biobío,SCGE,LSQ,Aeródromo María Dolores,Aeródromos
+Los Ángeles,Biobío,SCDQ,,Aeródromo San Lorenzo,Aeródromos
+Los Sauces,La Araucanía,SCGB,,Aeródromo Guadaba,Aeródromos
+Los Vilos,Coquimbo,SCLV,,Aeródromo La Viña,Aeródromos
+Los Vilos,Coquimbo,SCHO,,Aeródromo Punta Chungo,Aeródromos
+Los Vilos,Coquimbo,SCLA,,Aeródromo Tilama,Aeródromos
+Marchihue,O'Higgins,SCRZ,,Aeródromo El Carrizal,Aeródromos
+Marchihue,O'Higgins,SCMH,,Aeródromo La Esperanza,Aeródromos
+Marchihue,O'Higgins,SCLU,,Aeródromo La Laguna,Aeródromos
+Marchihue,O'Higgins,SCVJ,,Aeródromo Paredes Viejas,Aeródromos
+María Elena,Antofagasta,SCNE,,Aeródromo María Elena,Aeródromos
+Melinka,Aysén,SCMK,,Aeródromo Melinka,Aeródromos
+Melipeuco,La Araucanía,SCML,,Aeródromo Melipeuco,Aeródromos
+Melipilla,Metropolitana,SCME,,Aeródromo Los Cuatro Diablos,Aeródromos
+Melipilla,Metropolitana,SCMP,,Aeródromo Melipilla,Aeródromos
+Melipilla,Metropolitana,SCTS,,Aeródromo Santa Teresa del Almendral,Aeródromos
+Melipilla,Metropolitana,SCAB,,Aeródromo El Alba,Aeródromos
+Mialqui,Coquimbo,SCMI,,Aeródromo Los Tricahues,Aeródromos
+Michilla,Antofagasta,SCMY,,Aeródromo Carolina,Aeródromos
+Molina,Maule,SCLP,,Aeródromo Los Petiles,Aeródromos
+Molina,Maule,SCXA,,Aeródromo Alupenhue,Aeródromos
+Molina,Maule,SCKK,,Aeródromo La Cascada,Aeródromos
+Molina,Maule,SCMO,,Aeródromo Los Monos,Aeródromos
+Molina,Maule,SCMV,,Aeródromo Viña San Pedro,Aeródromos
+Mulchén,Biobío,SCPP,,Aeródromo Poco a Poco,Aeródromos
+Nacimiento,Biobío,SCNM,,Aeródromo El Huingan,Aeródromos
+Negrete,Biobío,SCBB,,Aeródromo Del Bío Bío,Aeródromos
+Ñiquén,Ñuble,SCJS,,Aeródromo José Abel Sepúlveda,Aeródromos
+Ñadis,Aysén,SCND,,Aeródromo Ñadis,Aeródromos
+Ñochaco,Los Lagos,SCNO,,Aeródromo Ñochaco,Aeródromos
+Olmué,Valparaíso,SCOM,,Aeródromo Olmué,Aeródromos
+Osorno,Los Lagos,SCCP,,Aeródromo Callipulli,Aeródromos
+Osorno,Los Lagos,SCJK,,Aeródromo Juan Kemp,Aeródromos
+Osorno,Los Lagos,SCQM,,Aeródromo Las Quemas,Aeródromos
+Osorno,Los Lagos,SCOP,,Aeródromo Pilauco,Aeródromos
+Ovalle,Coquimbo,SCOV,OVL,Aeródromo El Tuquí,Aeródromos
+Ovalle,Coquimbo,SCOA,,Aeródromo Estancia Los Loros,Aeródromos
+Ovalle,Coquimbo,SCFJ,,Aeródromo Fray Jorge,Aeródromos
+Ovalle,Coquimbo,SCOY,,Aeródromo Huayanay,Aeródromos
+Ovalle,Coquimbo,SCAD,,Aeródromo Santa Adriana,Aeródromos
+Ovalle,Coquimbo,SCOT,,Aeródromo Santa Rosa de Tabalí,Aeródromos
+Ovalle,Coquimbo,SCOB,,Aeródromo Tabalí Bajo,Aeródromos
+Paillaco,Los Ríos,SCPL,,Aeródromo Calpulli,Aeródromos
+Paillaco,Los Ríos,SCCO,,Aeródromo Hacienda Cotrilla,Aeródromos
+Paine,Metropolitana,SCAU,,Aeródromo Juan Enrique,Aeródromos
+Paine,Metropolitana,SCMN,,Aeródromo Mansel,Aeródromos
+Palena,Los Lagos,SCAP,WAP,Aeródromo Alto Palena,Aeródromos
+Palmilla,O'Higgins,SCAG,,Aeródromo Agua Santa,Aeródromos
+Panguipulli,Los Ríos,SCGP,,Aeródromo Curaco,Aeródromos
+Panguipulli,Los Ríos,SCPG,,Aeródromo Municipal de Panguipulli,Aeródromos
+Panguipulli,Los Ríos,SCNG,,Aeródromo Papageno,Aeródromos
+Panimávida,Maule,SCIV,,Aeródromo Panimávida,Aeródromos
+Paredones,O'Higgins,SCRW,,Aeródromo Rucalonco,Aeródromos
+Parral,Maule,SCEO,,Aeródromo El Salto,Aeródromos
+Parral,Maule,SCVB,,Aeródromo Hospital Villa Baviera,Aeródromos
+Pelarco,Maule,SCFO,,Aeródromo La Reforma,Aeródromos
+Pelluhue,Maule,SCKE,,Aeródromo Piedra Negra,Aeródromos
+Pencahue,Maule,SCLG,,Aeródromo La Aguada,Aeródromos
+Pencahue,Maule,SCUE,,Aeródromo La Peña,Aeródromos
+Peralillo,O'Higgins,SCSV,,Aeródromo Viña Sutil,Aeródromos
+Peulla,Los Lagos,SCPU,,Aeródromo Peulla,Aeródromos
+Petorca,Valparaíso,SCSP,,Aeródromo El Sobrante,Aeródromos
+Peumo,O'Higgins,SCPW,,Aeródromo Peumo,Aeródromos
+Pica,Tarapacá,SCKP,CPP,Aeródromo Coposa,Aeródromos
+Pozo Almonte,Tarapacá,SCNV,,Aeródromo Nueva Victoria,Aeródromos
+Pichidangui,Coquimbo,SCDI,,Aeródromo Pichidangui,Aeródromos
+Pichidegua,O'Higgins,SCHG,,Aeródromo Almahue,Aeródromos
+Pichilemu,O'Higgins,SCMU,,Aeródromo Panilonco,Aeródromos
+Pichilemu,O'Higgins,SCPM,,Aeródromo Pichilemu,Aeródromos
+Pichilemu,O'Higgins,SCMN,,Aeródromo Monaco,Aeródromos
+Pirque,Metropolitana,SCEP,,Aeródromo El Principal,Aeródromos
+Pirque,Metropolitana,SCZE,,Aeródromo Estero Seco,Aeródromos
+Porvenir,Magallanes,SCFM,WPR,Aeródromo Capitán Fuentes Martínez,Aeródromos
+Poyo,Los Lagos,SCYO,,Aeródromo de Poyo,Aeródromos
+Pucón,La Araucanía,SCKQ,,Aeródromo Curimanque,Aeródromos
+Pucón,La Araucanía,SCPC,ZPC,Aeródromo de Pucón,Aeródromos
+Puelo Bajo,Los Lagos,SCPB,,Aeródromo Puelo Bajo,Aeródromos
+Puerto Aysén,Aysén,SCAS,WPA,Aeródromo Cabo 1° Juan Román,Aeródromos
+Puerto Cisnes,Aysén,SCPK,,Aeródromo Puerto Cisnes,Aeródromos
+Puerto Cisnes,Aysén,SCLJ,,Aeródromo La Junta,Aeródromos
+Puerto Guadal,Aysén,SCMC,,Aeródromo Meseta Cosmelli,Aeródromos
+Puerto Guadal,Aysén,SCLO,,Aeródromo Los Leones,Aeródromos
+Puerto Guadal,Aysén,SCHH,,Aeródromo Punta Baja,Aeródromos
+Puerto Ingeniero Ibáñez,Aysén,SCII,,Aeródromo Puerto Ingeniero Ibáñez,Aeródromos
+Puerto Montt,Los Lagos,SCPF,,Aeródromo Marcel Marchant,Aeródromos
+Puerto Octay,Los Lagos,SCOC,,Aeródromo Las Araucarias,Aeródromos
+Puerto Raúl Marín Balmaceda,Aysén,SCMA,,Aeródromo Puerto Marín Balmaceda,Aeródromos
+Puerto Sánchez,Aysén,SCSZ,,Aeródromo Puerto Sánchez,Aeródromos
+Puerto Varas,Los Lagos,SCDD,,Aeródromo Don Dobri,Aeródromos
+Puerto Varas,Los Lagos,SCPV,PUX,Aeródromo El Mirador,Aeródromos
+Puerto Varas,Los Lagos,SCRY,,Aeródromo El Arrayán,Aeródromos
+Puerto Williams,Magallanes,SCGZ,WPU,Aeródromo Guardiamarina Zañartu,Aeródromos
+Punitaqui,Coquimbo,SCUN,,Aeródromo Bellavista de Punitaqui,Aeródromos
+Punta Arenas,Magallanes,SCID,,Aeródromo Marco Davison Bascur,Aeródromos
+Punta Arenas,Magallanes,SCNS,,Aeródromo Sandra Scabini,Aeródromos
+Punta Catalina,Magallanes,SCPX,,Aeródromo Punta Catalina,Aeródromos
+Purranque,Los Lagos,SCPR,,Aeródromo Corte Alto,Aeródromos
+Purranque,Los Lagos,SCYU,,Aeródromo Cuyumaique,Aeródromos
+Putre,Arica y Parinacota,,,Aeródromo Zapahuira,Aeródromos
+Puyehue,Los Lagos,SCYC,,Aeródromo La Capilla,Aeródromos
+Puyehue,Los Lagos,SCYL,,Aeródromo Licán,Aeródromos
+Puyehue,Los Lagos,SCOL,,Aeródromo Refugio del Lago,Aeródromos
+Puyuhuapi,Aysén,SCPH,,Aeródromo Puyuhuapi,Aeródromos
+Queilén,Los Lagos,SCQX,,Aeródromo Queilén,Aeródromos
+Quellón,Los Lagos,SCON,,Aeródromo Quellón,Aeródromos
+Quellón,Los Lagos,SCQU,,Aeródromo Inio,Aeródromos
+Quemchi,Los Lagos,SCQW,,Aeródromo Quemchi,Aeródromos
+Quillota,Valparaíso,SCQL,,Aeródromo El Boco,Aeródromos
+Quino,La Araucanía,SCQC,,Aeródromo La Colmena,Aeródromos
+Quinta de Tilcoco,O'Higgins,SCPO,,Aeródromo Los Paltos,Aeródromos
+Quintero,Valparaíso,SCER,,Aeródromo Quintero,Aeródromos
+Ranguelmo,Ñuble,SCJC,,Aeródromo James Conrad,Aeródromos
+Rapel,O'Higgins,SCRL,,Aeródromo La Estrella,Aeródromos
+Rapel,O'Higgins,SCGL,,Aeródromo Las Águilas,Aeródromos
+Rapel,O'Higgins,SCMR,,Aeródromo Las Águilas Oriente,Aeródromos
+Rapel,O'Higgins,SCRP,,Aeródromo Rapelhuapi,Aeródromos
+Recinto,Ñuble,SCAK,,Aeródromo Atacalco,Aeródromos
+Rengo,O'Higgins,SCGM,,Aeródromo Los Gomeros,Aeródromos
+Rengo,O'Higgins,SCNR,,Aeródromo Fundo Naicura,Aeródromos
+Reñihué,Los Lagos,SCRH,,Aeródromo Reñihué,Aeródromos
+Retiro,Maule,SCHP,,Aeródromo Copihue,Aeródromos
+Retiro,Maule,SCAJ,,Aeródromo Las Alpacas,Aeródromos
+Retiro,Maule,SCYR,,Aeródromo Los Maitenes,Aeródromos
+Retiro,Maule,SCDS,,Aeródromo San Andrés,Aeródromos
+Retiro,Maule,SCGI,,Aeródromo San Guillermo,Aeródromos
+Retiro,Maule,SCBU,,Aeródromo Bureo,Aeródromos
+Retiro,Maule,SCRT,,Aeródromo El Almendro,Aeródromos
+Riñihue,Los Lagos,SCVG,,Aeródromo El Vergel,Aeródromos
+Río Bueno,Los Ríos,SCBN,,Aeródromo Cotreumo,Aeródromos
+Río Bueno,Los Ríos,SCKD,,Aeródromo El Cardal,Aeródromos
+Río Bueno,Los Ríos,SCRR,,Aeródromo Purrahuín,Aeródromos
+Río Bueno,Los Ríos,SCRQ,,Aeródromo Rucañanco,Aeródromos
+Río Bueno,Los Ríos,SCUH,,Aeródromo Cuincahin,Aeródromos
+Río Cisnes,Aysén,SCRC,,Aeródromo Villa Tapera,Aeródromos
+Río Cisnes,Aysén,SCRE,,Aeródromo Estancia Río Cisnes,Aeródromos
+Río Claro,Maule,SCBV,,Aeródromo Bellavista,Aeródromos
+Río Frío,Los Lagos,SCRI,,Aeródromo Río Frío,Aeródromos
+Río Murta,Aysén,SCRU,,Aeródromo Río Murta,Aeródromos
+Romeral,Maule,SCOE,,Aeródromo San Miguel,Aeródromos
+Romeral,Maule,SCRO,,Aeródromo Santa Bárbara,Aeródromos
+Sagrada Familia,Maule,SCED,,Aeródromo Los Cedros,Aeródromos
+Salamanca,Coquimbo,SCXB,,Aeródromo Las Brujas,Aeródromos
+Salar de Atacama,Antofagasta,SCSL,,Aeródromo El Salar,Aeródromos
+Salar de Atacama,Antofagasta,SCSM,,Aeródromo Minsal,Aeródromos
+San Carlos,Ñuble,SCKA,,Aeródromo Santa Marta,Aeródromos
+San Clemente,Maule,SCSK,,Aeródromo Colorado,Aeródromos
+San Felipe,Valparaíso,SCSF,SSD,Aeródromo Víctor Lafón,Aeródromos
+San Fernando,O'Higgins,SCSD,,Aeródromo San Fernando,Aeródromos
+San Gregorio,Magallanes,SCTH,,Aeródromo Tres Chorrillos,Aeródromos
+San Javier de Loncomilla,Maule,SCSJ,,Aeródromo San Javier,Aeródromos
+San Javier de Loncomilla,Maule,SCJV,,Aeródromo El Parrón,Aeródromos
+San Javier de Loncomilla,Maule,SCLM,,Aeródromo Las Mercedes,Aeródromos
+San Javier de Loncomilla,Maule,SCMG,,Aeródromo Santa María de Mingre,Aeródromos
+San Nicolás,Ñuble,SCNI,,Aeródromo Santa Eugenia,Aeródromos
+San Pablo,Los Lagos,SCSQ,,Aeródromo Quilpe,Aeródromos
+San Pedro de Atacama,Antofagasta,SCPE,,Aeródromo San Pedro de Atacama,Aeródromos
+San Pedro,Metropolitana,SCVF,,Aeródromo Verfrut,Aeródromos
+San Sebastián,Magallanes,SCSS,,Aeródromo San Sebastián,Aeródromos
+San Vicente de Tagua Tagua,O'Higgins,SCET,,Aeródromo El Tambo,Aeródromos
+Santa Bárbara,Biobío,SCEH,,Aeródromo El Huachi,Aeródromos
+Santa Bárbara,Biobío,SCTA,,Aeródromo Santa Luisa,Aeródromos
+Santa Cruz,O'Higgins,SCUZ,,Aeródromo Aerosantacruz,Aeródromos
+Santa Cruz,O'Higgins,SCBD,,Aeródromo El Boldal,Aeródromos
+Santa Cruz,O'Higgins,SCPT,,Aeródromo La Puerta,Aeródromos
+Santiago,Metropolitana,SCTB,,Aeródromo Eulogio Sánchez,Aeródromos
+Santiago,Metropolitana,SCTI,ULC,Aeródromo Los Cerrillos,Aeródromos
+Santiago,Metropolitana,SCLC,,Aeródromo Municipal de Vitacura,Aeródromos
+Santo Domingo,Valparaíso,SCSN,,Aeródromo Santo Domingo,Aeródromos
+Segundo Corral,Los Lagos,SCSR,,Aeródromo Segundo Corral,Aeródromos
+Talagante,Metropolitana,SCEG,,Aeródromo El Corte,Aeródromos
+Talagante,Metropolitana,SCOS,,Aeródromo Entre Ríos,Aeródromos
+Talca,Maule,SCTL,TLX,Aeródromo Panguilemo,Aeródromos
+Taltal,Antofagasta,SCTT,TTC,Aeródromo Las Breas,Aeródromos
+Taltal,Antofagasta,SCUA,,Aeródromo Guanaco,Aeródromos
+Sierra Gorda,Antofagasta,SCOR,,Aeródromo Algorta,Aeródromos
+Temuco,La Araucanía,SCTC,PZS,Aeródromo Maquehue,Aeródromos
+Teno,Maule,SCAM,,Aeródromo Alempue,Aeródromos
+Teno,Maule,SCUN,,Aeródromo Unifrutti,Aeródromos
+Teodoro Schmidt,La Araucanía,SCSH,,Aeródromo El Budi,Aeródromos
+Territorio Chileno Antártico,Magallanes,SCPZ,,Aeródromo Patriot Hills,Aeródromos
+Territorio Chileno Antártico,Magallanes,SCGC,,Aeródromo Unión Glaciar,Aeródromos
+Tiltil,Metropolitana,SCSA,,Aeródromo Alberto Santos Dumont,Aeródromos
+Timaukel,Magallanes,SCAZ,,Aeródromo Azopardo,Aeródromos
+Timaukel,Magallanes,SCFN,,Aeródromo Russfin,Aeródromos
+Tirúa,Biobío,SCQK,,Aeródromo Lequecahue,Aeródromos
+Tocopilla,Antofagasta,SCBE,TOQ,Aeródromo Barriles,Aeródromos
+Tongoy,Coquimbo,SCTG,,Aeródromo Tongoy,Aeródromos
+Torres del Paine,Magallanes,SCGD,,Aeródromo Cerro Guido - Gunter Plüschow,Aeródromos
+Tortel,Aysén,SCCR,,Aeródromo Enrique Mayer Soto,Aeródromos
+Tortel,Aysén,SCRB,,Aeródromo Río Bravo,Aeródromos
+Tortel,Aysén,SCTP,,Aeródromo Río Pascua,Aeródromos
+Traiguén,La Araucanía,SCTR,,Aeródromo Traiguén,Aeródromos
+Traiguén,La Araucanía,SCHF,,Aeródromo Chufquén,Aeródromos
+Valdivia,Los Ríos,SCVL,,Aeródromo Las Marías,Aeródromos
+Vallenar,Atacama,SCLL,VLR,Aeródromo Vallenar,Aeródromos
+Valparaíso,Valparaíso,SCRD,,Aeródromo Rodelillo,Aeródromos
+Vichuquén,Maule,SCVQ,,Aeródromo Cuatro Pantanos,Aeródromos
+Vichuquén,Maule,SCVK,,Aeródromo El Álamo,Aeródromos
+Victoria,La Araucanía,SCTO,ZIC,Aeródromo Victoria,Aeródromos
+Victoria,La Araucanía,SCVO,,Aeródromo María Ester,Aeródromos
+Vicuña,Coquimbo,SCVC,,Aeródromo El Indio,Aeródromos
+Vicuña,Coquimbo,SCVN,,Aeródromo Huancara,Aeródromos
+Vilcún,La Araucanía,SCVU,,Aeródromo Agromanzún,Aeródromos
+Vilcún,La Araucanía,SCVY,,Aeródromo Malla,Aeródromos
+Vilcún,La Araucanía,SCNH,,Aeródromo Ainhoa,Aeródromos
+Vilcún,La Araucanía,SCRV,,Aeródromo La Verónica,Aeródromos
+Villa Cerro Castillo,Magallanes,SCPY,,Aeródromo Cerro Castillo,Aeródromos
+Villa O'Higgins,Aysén,SCIO,,Aeródromo Laguna Redonda,Aeródromos
+Villa O'Higgins,Aysén,SCOH,,Aeródromo Villa O'Higgins,Aeródromos
+Villarrica,La Araucanía,SCMF,,Aeródromo Malloco,Aeródromos
+Villarrica,La Araucanía,SCVI,,Aeródromo Villarrica,Aeródromos
+Yumbel,Biobío,SCYB,,Aeródromo Trilahue,Aeródromos
+Zapallar,Valparaíso,SCZC,,Aeródromo Casas Viejas,Aeródromos
+Zapallar,Valparaíso,SCZA,,Aeródromo La Empastada,Aeródromos
+Zapallar,Valparaíso,,,Aeródromo Catapilco,Aeródromos
+Posesión,Magallanes,SHSE,,Helipuerto ENAP Posesión,Helipuertos
+Quilicura,Metropolitana,SHKP,,Helipuerto Kipreos,Helipuertos
+Rancagua,O'Higgins,SHCP,,Helipuerto Servicios Aéreos Copters,Helipuertos
+Yerbas Buenas,Maule,SHHE,,Helipuerto de Yerbas Buenas,Helipuertos

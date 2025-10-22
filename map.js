@@ -1,380 +1,391 @@
 // Configuration
 const config = {
-    margin: { top: 20, right: 20, bottom: 20, left: 20 }
+    margin: { top: 40, right: 40, bottom: 60, left: 80 }
 };
 
-let airports = []; // Will be loaded from CSV
-let projection, path, svg, mapGroup, zoom, currentWidth, currentHeight;
+let bubbleData = [];
+let svg, chartGroup, currentWidth, currentHeight;
 
-// loading and process CSV data
-async function loadAirportData() {
+// Load and process the two CSV files
+async function loadData() {
     try {
-        const csvText = await d3.text("air_ops.csv");
-        const csvData = d3.csvParse(csvText);
+        // Load both CSVs in parallel
+        const [operacionesData, metadatosData] = await Promise.all([
+            d3.csv("operaciones-aeropuertos.csv"),
+            d3.csv("metadatos_aeropuertos.csv")
+        ]);
         
-        airports = csvData.map(d => {
-            // fixing coordinate parsing, removing extra periods and formatting correctly
-            let latStr = d.lat.toString().replace(/\./g, '');
-            let lonStr = d.lon.toString().replace(/\./g, '');
-            
-            // inserting decimal point after first 3 characters (including minus sign)
-            const lat = parseFloat(latStr.substring(0, 3) + '.' + latStr.substring(3, 6));
-            const lon = parseFloat(lonStr.substring(0, 3) + '.' + lonStr.substring(3, 6));
-            
-            return {
-                codigo: d.codigo,
-                nombre_aeropuerto: d.nombre_aeropuerto,
-                ciudad: d.ciudad,
-                region: d.region,
-                lat: lat,
-                lon: lon,
-                ops_2019: +d.ops_2019,
-                ops_2020: +d.ops_2020,
-                reduction_pct: Math.abs(+d.var_pct_20_vs_19) // making positive for display
-            };
+        console.log(`Loaded ${operacionesData.length} operation records`);
+        console.log(`Loaded ${metadatosData.length} airports`);
+        
+        // Filter to last 10 years (201511 onwards)
+        const filteredOps = operacionesData.filter(d => +d.mes_id >= 201511);
+        console.log(`Filtered to ${filteredOps.length} records from 2015-11 onwards`);
+        
+        // Create metadata lookup
+        const metadataMap = new Map();
+        metadatosData.forEach(d => {
+            metadataMap.set(d.OACI, {
+                nombre: d.Nombre,
+                ciudad: d.Ciudad,
+                region: d.Region,
+                tipo: d.Tipo,
+                iata: d.IATA
+            });
         });
         
-        console.log(`Loaded ${airports.length} airports from CSV`);
-        return airports;
+        // Group by year only - aggregate all airports
+        const opsByYear = d3.rollup(
+            filteredOps,
+            v => ({
+                operations: d3.sum(v, d => +d.cnt_operaciones),
+                airports: new Set(v.map(d => d.aeropuerto_oaci)).size
+            }),
+            d => Math.floor(+d.mes_id / 100) // Extract year from YYYYMM
+        );
+        
+        // Create data points: one per year
+        bubbleData = [];
+        opsByYear.forEach((data, year) => {
+            if (year >= 2016 && year <= 2024) {
+                bubbleData.push({
+                    year: year,
+                    operations: data.operations,
+                    airports: data.airports
+                });
+            }
+        });
+        
+        console.log(`Created ${bubbleData.length} data points (one per year)`);
+        console.log('Sample:', bubbleData[0]);
+        
+        return bubbleData;
     } catch (error) {
-        console.error("Error loading CSV:", error);
+        console.error("Error loading data:", error);
         return [];
     }
 }
 
-function createColorScale(t) { 
-    const colors = [
-        { pos: 0.0, color: "#4fc3f7" },   // Light blue (0% reduction: good)
-        { pos: 0.2, color: "#42a5f5" },   // Medium blue
-        { pos: 0.4, color: "#7e57c2" },   // Purple 
-        { pos: 0.6, color: "#ac26c4ff" },   // Magenta
-        { pos: 0.8, color: "#ec407a" },   // Pink
-        { pos: 1.0, color: "#ef5350" }    // Coral red (100% reduction: bad)
-    ];
-    
-    // Find the two colors to interpolate between
-    let lowerColor, upperColor, localT;
-    
-    for (let i = 0; i < colors.length - 1; i++) {
-        if (t >= colors[i].pos && t <= colors[i + 1].pos) {
-            lowerColor = colors[i];
-            upperColor = colors[i + 1];
-            localT = (t - lowerColor.pos) / (upperColor.pos - lowerColor.pos);
-            break;
-        }
-    }
-    
-    // Parse hex colors
-    const parseHex = (hex) => {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        return { r, g, b };
-    };
-    
-    const lower = parseHex(lowerColor.color);
-    const upper = parseHex(upperColor.color);
-    
-    // Interpolate with slight easing for smoother transitions
-    const eased = localT * localT * (3 - 2 * localT); // Smoothstep function
-    const r = Math.round(lower.r + (upper.r - lower.r) * eased);
-    const g = Math.round(lower.g + (upper.g - lower.g) * eased);
-    const b = Math.round(lower.b + (upper.b - lower.b) * eased);
-    
-    return `rgb(${r}, ${g}, ${b})`;
-}
-
-// getting responsive dimensions optimized for Chile's shape
-function getMapDimensions() {
-    const mapContainer = document.querySelector('.map-container');
-    const containerWidth = mapContainer.clientWidth - 40; // padding
-    
-    const maxWidth = Math.min(350, containerWidth); // Much narrower max width
-    const height = Math.min(700, window.innerHeight * 0.6); // Taller height
+// Get responsive dimensions
+function getChartDimensions() {
+    const container = document.querySelector('.map-container');
+    const containerWidth = container.clientWidth - 40;
     
     return {
-        width: Math.max(250, maxWidth), // Minimum 250px width
-        height: Math.max(500, height)   // Minimum 500px height
+        width: Math.max(400, Math.min(containerWidth, 800)),
+        height: Math.max(350, Math.min(window.innerHeight * 0.5, 500))
     };
 }
 
-// creating tooltip
+// Create tooltip
 function createTooltip() {
     return d3.select("body").append("div")
-        .attr("class", "tooltip");
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 }
 
-// initializing the map
-async function initMap() {
-    // Load airport data first
-    await loadAirportData();
+// Initialize the chart
+async function initChart() {
+    // Load data
+    await loadData();
     
-    if (airports.length === 0) {
-        console.error("No airport data loaded");
+    if (bubbleData.length === 0) {
+        console.error("No data loaded");
         return;
     }
-
-    const dimensions = getMapDimensions();
+    
+    const dimensions = getChartDimensions();
     currentWidth = dimensions.width;
     currentHeight = dimensions.height;
-
+    
+    // Create SVG
     svg = d3.select("#map")
-        .attr("width", currentWidth)
-        .attr("height", currentHeight);
-
-    // creating a group for all map elements
-    mapGroup = svg.append("g");
-
+        .attr("width", currentWidth + config.margin.left + config.margin.right)
+        .attr("height", currentHeight + config.margin.top + config.margin.bottom);
+    
+    chartGroup = svg.append("g")
+        .attr("transform", `translate(${config.margin.left},${config.margin.top})`);
+    
     // Create tooltip
     const tooltip = createTooltip();
-
-    // setting up zoom behavior
-    zoom = d3.zoom()
-        .scaleExtent([0.5, 8])
-        .on("zoom", function(event) {
-            mapGroup.attr("transform", event.transform);
-        });
-
-    // applying zoom to the SVG
-    svg.call(zoom);
-
-    // loading Chile GeoJSON data
-    d3.json("world.geojson")
-        .then(function(world) {
-            drawMap(world, tooltip);
-            setupButtons();
-        })
-        .catch(function(error) {
-            console.error("Error loading map data:", error);
-        });
+    
+    // Draw the chart
+    drawChart(tooltip);
+    
+    // Setup controls
+    setupControls();
 }
 
-function drawMap(world, tooltip) {
-    // finding Chile in the data
-    const chile = world.features.find(d => 
-        d.properties.name && d.properties.name.toLowerCase().includes('chile')
-    );
+function drawChart(tooltip) {
+    // Clear existing content
+    chartGroup.selectAll("*").remove();
     
-    if (!chile) {
-        console.error("Chile not found in the data");
-        return;
-    }
-
-    // setting up projection with responsive dimensions
-    projection = d3.geoMercator()
-        .fitSize([currentWidth, currentHeight], chile);
+    // Create scales
+    const xScale = d3.scaleLinear()
+        .domain([2016, 2024])
+        .range([0, currentWidth]);
     
-    path = d3.geoPath().projection(projection);
-
-    // clearing existing elements
-    mapGroup.selectAll("*").remove();
-
-    // draeing Chile outline
-    mapGroup.append("path")
-        .datum(chile)
-        .attr("class", "country-outline")
-        .attr("d", path);
-
-    // setting up color scale using our interpolator
-    const maxReduction = d3.max(airports, d => d.reduction_pct);
-    const colorScale = d3.scaleSequential(t => createColorScale(t))
-        .domain([0, 100]);
-
-    // calculating responsive marker size
-    const markerSize = Math.max(3, Math.min(6, currentWidth / 50));
-
-
-    // drawing airports
-    mapGroup.selectAll(".airport-marker")
-        .data(airports)
+    const maxOps = d3.max(bubbleData, d => d.operations);
+    const yScale = d3.scaleLinear()
+        .domain([0, maxOps * 1.1])
+        .range([currentHeight, 0]);
+    
+    // Bubble size scale - based on operations volume
+    const sizeScale = d3.scaleSqrt()
+        .domain([0, maxOps])
+        .range([15, 60]);
+    
+    // Color scale based on year (pre-COVID, COVID, post-COVID)
+    const colorScale = d3.scaleOrdinal()
+        .domain([2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024])
+        .range(['#4fc3f7', '#42a5f5', '#2196f3', '#1976d2', '#ef5350', '#f44336', '#ffa726', '#66bb6a', '#4caf50']);
+    
+    // Add grid lines
+    chartGroup.append("g")
+        .attr("class", "grid")
+        .attr("opacity", 0.1)
+        .call(d3.axisLeft(yScale)
+            .tickSize(-currentWidth)
+            .tickFormat("")
+        )
+        .selectAll("line")
+        .attr("stroke", "white");
+    
+    // X axis
+    const xAxis = d3.axisBottom(xScale)
+        .tickFormat(d3.format("d"))
+        .ticks(9);
+    
+    chartGroup.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", `translate(0,${currentHeight})`)
+        .call(xAxis)
+        .selectAll("text")
+        .attr("fill", "rgba(255, 255, 255, 0.9)")
+        .attr("font-size", "12px");
+    
+    chartGroup.selectAll(".x-axis line, .x-axis path")
+        .attr("stroke", "rgba(255, 255, 255, 0.4)");
+    
+    // Y axis
+    const yAxis = d3.axisLeft(yScale)
+        .ticks(6)
+        .tickFormat(d => d >= 1000 ? `${(d/1000).toFixed(0)}k` : d);
+    
+    chartGroup.append("g")
+        .attr("class", "y-axis")
+        .call(yAxis)
+        .selectAll("text")
+        .attr("fill", "rgba(255, 255, 255, 0.9)")
+        .attr("font-size", "12px");
+    
+    chartGroup.selectAll(".y-axis line, .y-axis path")
+        .attr("stroke", "rgba(255, 255, 255, 0.4)");
+    
+    // X axis label
+    chartGroup.append("text")
+        .attr("class", "axis-label")
+        .attr("x", currentWidth / 2)
+        .attr("y", currentHeight + 50)
+        .attr("text-anchor", "middle")
+        .attr("fill", "rgba(255, 255, 255, 0.95)")
+        .attr("font-size", "14px")
+        .attr("font-weight", "600")
+        .text("Año");
+    
+    // Y axis label
+    chartGroup.append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -currentHeight / 2)
+        .attr("y", -60)
+        .attr("text-anchor", "middle")
+        .attr("fill", "rgba(255, 255, 255, 0.95)")
+        .attr("font-size", "14px")
+        .attr("font-weight", "600")
+        .text("Operaciones Anuales");
+    
+    // Add COVID marker
+    chartGroup.append("line")
+        .attr("x1", xScale(2020))
+        .attr("x2", xScale(2020))
+        .attr("y1", 0)
+        .attr("y2", currentHeight)
+        .attr("stroke", "rgba(255, 100, 100, 0.5)")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "5,5");
+    
+    chartGroup.append("text")
+        .attr("x", xScale(2020))
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .attr("fill", "rgba(255, 255, 255, 0.8)")
+        .attr("font-size", "11px")
+        .attr("font-weight", "600")
+        .text("COVID-19");
+    
+    // Draw bubbles
+    const bubbles = chartGroup.selectAll(".bubble")
+        .data(bubbleData)
         .enter()
         .append("circle")
-        .attr("class", "airport-marker")
-        .attr("cx", d => projection([d.lon, d.lat])[0])
-        .attr("cy", d => projection([d.lon, d.lat])[1])
-        .attr("r", markerSize)
-        .attr("fill", d => colorScale(d.reduction_pct))
+        .attr("class", "bubble")
+        .attr("cx", d => xScale(d.year))
+        .attr("cy", d => yScale(d.operations))
+        .attr("r", d => sizeScale(d.operations))
+        .attr("fill", d => colorScale(d.year))
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 0.5)
+        .attr("opacity", 0.75)
+        .style("cursor", "pointer")
         .on("mouseover", function(event, d) {
-            // Set content first
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("opacity", 1)
+                .attr("stroke-width", 2)
+                .attr("stroke", "#fff");
+            
             tooltip.html(`
                 <div class="tooltip-content">
                     <div class="tooltip-airport">
-                        ${d.nombre_aeropuerto}
-                    </div>
-                    <div class="tooltip-location">
-                        ${d.ciudad}, ${d.region} • ${d.codigo}
+                        Año ${d.year}
                     </div>
                     <div class="tooltip-ops">
-                        <span>2019:</span>
-                        <span class="tooltip-ops-value">${d.ops_2019.toLocaleString()}</span>
+                        <span>Operaciones totales:</span>
+                        <span class="tooltip-ops-value">${d.operations.toLocaleString()}</span>
                     </div>
                     <div class="tooltip-ops">
-                        <span>2020:</span>
-                        <span class="tooltip-ops-value">${d.ops_2020.toLocaleString()}</span>
-                    </div>
-                    <div class="tooltip-reduction">
-                        ↓ ${d.reduction_pct.toFixed(1)}% reducción
+                        <span>Aeropuertos activos:</span>
+                        <span class="tooltip-ops-value">${d.airports}</span>
                     </div>
                 </div>
             `);
-
-            // Calculate positioning
-            const tooltipWidth = window.innerWidth <= 480 ? 200 : 
-                                window.innerWidth <= 768 ? 220 : 240;
+            
+            const tooltipWidth = 240;
             const leftPosition = Math.max(10, event.pageX - tooltipWidth - 10);
-
-            // Temporarily show to measure height
+            
             tooltip.style("opacity", 0)
-                  .style("visibility", "visible")
-                  .style("left", leftPosition + "px")
-                  .style("top", "0px");
-
+                .style("visibility", "visible")
+                .style("left", leftPosition + "px")
+                .style("top", "0px");
+            
             const actualHeight = tooltip.node().offsetHeight;
-
-            // Smart vertical positioning
             let topPosition;
             if (event.pageY + actualHeight + 20 > window.innerHeight) {
                 topPosition = Math.max(10, event.pageY - actualHeight - 10);
             } else {
                 topPosition = event.pageY + 15;
             }
-
-            // Final positioning and animate in
+            
             tooltip.style("top", topPosition + "px")
-                  .transition()
-                  .duration(200)
-                  .style("opacity", 0.9);
+                .transition()
+                .duration(200)
+                .style("opacity", 0.9);
         })
-        .on("mouseout", function(d) {
+        .on("mouseout", function() {
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("opacity", 0.75)
+                .attr("stroke-width", 0.5)
+                .attr("stroke", "#fff");
+            
             tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
         });
-
-    // creating legend
-    createLegend(svg, colorScale, maxReduction);
+    
+    // Create legend
+    createLegend(colorScale);
 }
 
-function setupButtons() {
-    // zoom in button
-    document.getElementById("zoom-in").addEventListener("click", function() {
-        svg.transition().duration(300).call(
-            zoom.scaleBy, 1.5
-        );
-    });
-
-    // zoom out button
-    document.getElementById("zoom-out").addEventListener("click", function() {
-        svg.transition().duration(300).call(
-            zoom.scaleBy, 1 / 1.5
-        );
-    });
-
+function setupControls() {
     // Reset button
     document.getElementById("reset-zoom").addEventListener("click", function() {
-        svg.transition().duration(750).call(
-            zoom.transform,
-            d3.zoomIdentity
-        );
+        drawChart(d3.select(".tooltip"));
     });
+    
+    // Hide zoom in/out buttons (not needed for this chart)
+    document.getElementById("zoom-in").style.display = "none";
+    document.getElementById("zoom-out").style.display = "none";
 }
 
-function createLegend(svg, colorScale, maxReduction) {
+function createLegend(colorScale) {
     const legendContainer = d3.select(".legend-scale");
-    
-    // clear any existing legend
     legendContainer.selectAll("*").remove();
     
-    // getting the actual dimensions of the legend container
-    const containerRect = legendContainer.node().getBoundingClientRect();
-    const legendWidth = Math.max(120, containerRect.width);
-    const legendHeight = Math.max(200, containerRect.height);
+    // Update legend title
+    d3.select(".legend h3")
+        .text("Periodo");
     
-    // creating gradient definition using our custom color scale
-    const defs = svg.select("defs").empty() ? svg.append("defs") : svg.select("defs");
-    defs.select("#legend-gradient").remove();
+    const legendData = [
+        { label: "Pre-COVID (2016-2019)", years: [2016, 2017, 2018, 2019] },
+        { label: "COVID (2020-2021)", years: [2020, 2021] },
+        { label: "Post-COVID (2022-2024)", years: [2022, 2023, 2024] }
+    ];
     
-    const gradient = defs.append("linearGradient")
-        .attr("id", "legend-gradient")
-        .attr("x1", "0%")
-        .attr("y1", "100%")
-        .attr("x2", "0%")
-        .attr("y2", "0%");
-    
-    // creating smooth gradient stops using our high-contrast color scale
-    const stops = d3.range(0, 101, 2); // frequent stops for smoother gradient
-    stops.forEach(stop => {
-        gradient.append("stop")
-            .attr("offset", `${stop}%`)
-            .attr("stop-color", createColorScale(stop / 100));
-    });
-    
-    // legend SVG that fills the container
     const legendSvg = legendContainer
         .append("svg")
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .attr("viewBox", `0 0 ${legendWidth} ${legendHeight}`)
-        .attr("preserveAspectRatio", "xMidYMid meet");
+        .attr("width", 250)
+        .attr("height", 200);
     
-    // calculating centered positions
-    const rectWidth = 50; // Wider rectangle
-    const rectHeight = legendHeight * 0.7; // Use 70% of available height
-    const rectX = (legendWidth - rectWidth) / 2; // Center horizontally
-    const rectY = (legendHeight - rectHeight) / 2; // Center vertically
-    
-    // gradient rectangle with clean styling for data viz
-    legendSvg.append("rect")
-        .attr("class", "legend-gradient-rect")
-        .attr("x", rectX)
-        .attr("y", rectY)
-        .attr("width", rectWidth)
-        .attr("height", rectHeight)
-        .attr("rx", 8);
-    
-    // labels with contrast for glassmorphism
-    const values = [0, 25, 50, 75, 100];
-    const scale = d3.scaleLinear()
-        .domain([0, 100])
-        .range([rectY + rectHeight, rectY]);
-    
-    values.forEach(value => {
-        const y = scale(value);
-        
+    let yPos = 20;
+    legendData.forEach(period => {
+        // Period label
         legendSvg.append("text")
-            .attr("class", "legend-label")
-            .attr("x", rectX + rectWidth + 10)
-            .attr("y", y + 5)
-            .text(`${value}%`);
+            .attr("x", 10)
+            .attr("y", yPos)
+            .attr("fill", "rgba(255, 255, 255, 0.95)")
+            .attr("font-size", "13px")
+            .attr("font-weight", "600")
+            .text(period.label);
+        
+        yPos += 20;
+        
+        // Year circles
+        period.years.forEach((year, i) => {
+            legendSvg.append("circle")
+                .attr("cx", 20 + i * 35)
+                .attr("cy", yPos)
+                .attr("r", 6)
+                .attr("fill", colorScale(year))
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1);
+            
+            legendSvg.append("text")
+                .attr("x", 20 + i * 35)
+                .attr("y", yPos + 20)
+                .attr("text-anchor", "middle")
+                .attr("fill", "rgba(255, 255, 255, 0.9)")
+                .attr("font-size", "10px")
+                .text(year);
+        });
+        
+        yPos += 45;
     });
 }
 
-// handling window resize
+// Handle window resize
 async function handleResize() {
-    const dimensions = getMapDimensions();
+    const dimensions = getChartDimensions();
     
     if (dimensions.width !== currentWidth || dimensions.height !== currentHeight) {
         currentWidth = dimensions.width;
         currentHeight = dimensions.height;
         
-        svg.attr("width", currentWidth).attr("height", currentHeight);
+        svg.attr("width", currentWidth + config.margin.left + config.margin.right)
+            .attr("height", currentHeight + config.margin.top + config.margin.bottom);
         
-        // reloading map data if available
-        d3.json("world.geojson")
-            .then(function(world) {
-                const tooltip = d3.select(".tooltip");
-                drawMap(world, tooltip);
-            })
-            .catch(function(error) {
-                console.error("Error reloading map data:", error);
-            });
+        const tooltip = d3.select(".tooltip");
+        drawChart(tooltip);
     }
 }
 
-// init when page loads
-document.addEventListener('DOMContentLoaded', initMap);
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', initChart);
 
-// adding resize listener with debouncing
+// Add resize listener with debouncing
 let resizeTimer;
 window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
