@@ -107,43 +107,51 @@ function renderTimeline(monthlyData) {
     const margin = {top: 20, right: 30, bottom: 40, left: 70};
     const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
-    
+
+    container.selectAll('*').remove();
+
     const svg = container.append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
-    
-    // Parse dates and filter to 2015 onwards
+
+    // Add clip path to confine the drawing area, area does not overlap with y axis labels ;)
+    svg.append("clipPath")
+        .attr("id", "clip")
+      .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Parse dates and filter 2015 onwards
     const parseDate = d3.timeParse('%Y-%m-%d');
     const filtered = monthlyData.filter(d => {
         const year = parseInt(d.date_str.substring(0, 4));
         return year >= 2015;
     });
-    
     filtered.forEach(d => {
-        d.date = parseDate(d.date_str);
+        d.date = parseDate(d.date_str)
     });
-    
+
     // Scales
     const x = d3.scaleTime()
         .domain(d3.extent(filtered, d => d.date))
         .range([0, width]);
-    
+
     const y = d3.scaleLinear()
         .domain([0, d3.max(filtered, d => d.cnt_operaciones) * 1.1])
         .range([height, 0]);
-    
+
     // Color function based on date
     const getColor = (date) => {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
-        
+
         if (year < 2020) return '#4fc3f7';
         if (year === 2020 || (year === 2021 && month <= 6)) return '#ef5350';
         return '#66bb6a';
     };
-    
+
     // Add grid
     svg.append('g')
         .attr('class', 'grid')
@@ -152,15 +160,15 @@ function renderTimeline(monthlyData) {
             .tickSize(-width)
             .tickFormat('')
         );
-    
+
     // Area chart
     const area = d3.area()
         .x(d => x(d.date))
         .y0(height)
         .y1(d => y(d.cnt_operaciones))
         .curve(d3.curveMonotoneX);
-    
-    // Create gradient for area
+
+    // Gradient
     const gradient = svg.append('defs')
         .append('linearGradient')
         .attr('id', 'area-gradient')
@@ -168,79 +176,59 @@ function renderTimeline(monthlyData) {
         .attr('y1', '0%')
         .attr('x2', '0%')
         .attr('y2', '100%');
-    
+
     gradient.append('stop')
         .attr('offset', '0%')
         .attr('stop-color', '#667eea')
         .attr('stop-opacity', 0.6);
-    
+
     gradient.append('stop')
         .attr('offset', '100%')
         .attr('stop-color', '#667eea')
         .attr('stop-opacity', 0.1);
-    
-    svg.append('path')
+
+    // clippath to area
+    const areaPath = svg.append('path')
         .datum(filtered)
         .attr('fill', 'url(#area-gradient)')
-        .attr('d', area);
-    
+        .attr('d', area)
+        .attr("clip-path", "url(#clip)");
+
     // Line
     const line = d3.line()
         .x(d => x(d.date))
         .y(d => y(d.cnt_operaciones))
         .curve(d3.curveMonotoneX);
-    
-    svg.append('path')
+
+    // clippath to line
+    const linePath = svg.append('path')
         .datum(filtered)
         .attr('fill', 'none')
         .attr('stroke', '#667eea')
         .attr('stroke-width', 2)
-        .attr('d', line);
-    
-    // COVID marker
-    const covidDate = new Date('2020-03-01');
-    svg.append('line')
-        .attr('x1', x(covidDate))
-        .attr('x2', x(covidDate))
-        .attr('y1', 0)
-        .attr('y2', height)
-        .attr('stroke', '#ef5350')
-        .attr('stroke-width', 2)
-        .attr('stroke-dasharray', '5,5')
-        .attr('opacity', 0.8);
-    
-    svg.append('text')
-        .attr('x', x(covidDate))
-        .attr('y', -5)
-        .attr('text-anchor', 'middle')
-        .attr('fill', '#ef5350')
-        .attr('font-size', '12px')
-        .attr('font-weight', '600')
-        .text('COVID-19');
-    
-    // Axes
-    const xAxis = d3.axisBottom(x)
-        .ticks(d3.timeYear.every(1))
-        .tickFormat(d3.timeFormat('%Y'));
-    
-    svg.append('g')
+        .attr('d', line)
+        .attr("clip-path", "url(#clip)");
+
+    // Axes groups for zoom funcion
+    const xAxisGroup = svg.append('g')
+        .attr('class', 'x-axis')
         .attr('transform', `translate(0,${height})`)
-        .call(xAxis)
+        .call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')))
         .selectAll('text')
         .attr('fill', '#a0a0a0');
     
-    const yAxis = d3.axisLeft(y)
-        .ticks(6)
-        .tickFormat(d => d >= 1000 ? `${(d/1000).toFixed(0)}k` : d);
-    
-    svg.append('g')
-        .call(yAxis)
+    // separate selection:
+    const xAxis = svg.select('.x-axis');
+
+    const yAxis = svg.append('g')
+        .attr('class', 'y-axis')
+        .call(d3.axisLeft(y).ticks(6).tickFormat(d => d >= 1000 ? `${(d/1000).toFixed(0)}k` : d))
         .selectAll('text')
         .attr('fill', '#a0a0a0');
-    
+
     svg.selectAll('.domain, .tick line')
         .attr('stroke', '#2a2f4a');
-    
+
     // Y-axis label
     svg.append('text')
         .attr('transform', 'rotate(-90)')
@@ -250,12 +238,44 @@ function renderTimeline(monthlyData) {
         .attr('fill', '#e0e0e0')
         .attr('font-size', '12px')
         .text('Operaciones Mensuales');
-    
+
+    // COVID marker clippath applied (tuve que quitar el texto)
+    const covidDate = new Date('2020-03-01');
+    svg.append('line')
+        .attr('class', 'covid-line')
+        .attr('x1', x(covidDate))
+        .attr('x2', x(covidDate))
+        .attr('y1', 0)
+        .attr('y2', height)
+        .attr('stroke', '#ef5350')
+        .attr('stroke-width', 2)
+        .attr('stroke-dasharray', '5,5')
+        .attr('opacity', 0.8)
+        .attr("clip-path", "url(#clip)");
+
+    svg.append('text')
+        .attr('class', 'covid-text')
+        .attr('x', x(covidDate))
+        .attr('y', -5)
+        .attr('text-anchor', 'middle')
+        .attr('fill', '#ef5350')
+        .attr('font-size', '12px')
+        .attr('font-weight', '600')
+        .text('COVID-19')
+        .attr("clip-path", "url(#clip)");
+
     // Tooltip
     const tooltip = d3.select('body').append('div')
-        .attr('class', 'tooltip');
-    
-    // Interactive dots
+        .attr('class', 'tooltip')
+        .style('opacity', 0)
+        .style('position', 'absolute')
+        .style('background', '#222')
+        .style('color', '#fff')
+        .style('padding', '6px 10px')
+        .style('border-radius', '4px')
+        .style('pointer-events', 'none');
+
+    //Matener interactive dots
     svg.selectAll('.dot')
         .data(filtered)
         .enter()
@@ -268,6 +288,7 @@ function renderTimeline(monthlyData) {
         .attr('opacity', 0)
         .attr('stroke', '#fff')
         .attr('stroke-width', 2)
+        .attr("clip-path", "url(#clip)")
         .style('cursor', 'pointer')
         .on('mouseover', function(event, d) {
             d3.select(this)
@@ -275,17 +296,17 @@ function renderTimeline(monthlyData) {
                 .duration(200)
                 .attr('opacity', 1)
                 .attr('r', 6);
-            
+
             const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             const monthName = months[d.date.getMonth()];
-            
-            tooltip.html(`
-                <strong>${monthName} ${d.date.getFullYear()}</strong><br/>
+
+            tooltip.html(
+                `<strong>${monthName} ${d.date.getFullYear()}</strong><br/>
                 Operaciones: ${d.cnt_operaciones.toLocaleString()}
-            `)
-            .style('opacity', 1)
-            .style('left', (event.pageX + 10) + 'px')
-            .style('top', (event.pageY - 10) + 'px');
+                `)
+                .style('opacity', 1)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
         })
         .on('mouseout', function() {
             d3.select(this)
@@ -293,8 +314,63 @@ function renderTimeline(monthlyData) {
                 .duration(200)
                 .attr('opacity', 0)
                 .attr('r', 4);
-            
             tooltip.style('opacity', 0);
+        });
+
+    // Zoom behavior
+    const zoom = d3.zoom()
+        .scaleExtent([1, 20])
+        .translateExtent([[0, 0], [width, height]])
+        .extent([[0, 0], [width, height]])
+        .on('zoom', zoomed);
+
+    svg.append('rect')
+        .attr('width', width)
+        .attr('height', height)
+        .style('fill', 'none')
+        .style('pointer-events', 'all')
+        .lower(); // send behind other elements
+
+    svg.call(zoom);
+
+    function zoomed(event) {
+        const transform = event.transform;
+        const newX = transform.rescaleX(x);
+
+        // Mover Axis respecto a zoom
+        xAxis.call(d3.axisBottom(newX).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')));
+
+        // Mover raya COVID
+        svg.select('line.covid-line')
+            .attr('x1', newX(covidDate))
+            .attr('x2', newX(covidDate));
+
+        svg.select('text.covid-text')
+            .attr('x', newX(covidDate));
+
+        // Mover elementos para X
+        linePath.attr('d', line.x(d => newX(d.date)));
+        areaPath.attr('d', area.x(d => newX(d.date)));
+
+        // Puntos posicion new
+        svg.selectAll('.dot')
+            .attr('cx', d => newX(d.date))
+            .attr('cy', d => y(d.cnt_operaciones));
+    }
+
+    // Reset posicion
+    container.append('button')
+        .text('Reset Zoom')
+        .style('margin-top', '10px')
+        .style('padding', '6px 12px')
+        .style('font-size', '14px')
+        .style('cursor', 'pointer')
+        .on('click', () => {
+            svg.transition().duration(750).call(
+                zoom.transform,
+                d3.zoomIdentity,
+                d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+            );
         });
 }
 
