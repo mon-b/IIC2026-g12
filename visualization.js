@@ -123,7 +123,9 @@ function renderTimeline(monthlyData) {
     const soundPre2020 = new Audio('sounds/crowd.mp3');
     const soundCovid = new Audio('sounds/cough.mp3');
     const soundPost2021 = new Audio('sounds/takeoff.mp3');
-    
+
+    let currentSound = null;
+
     function getSoundForDate(date) {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
@@ -133,25 +135,36 @@ function renderTimeline(monthlyData) {
     }
     //allows to play the sounds 
     const soundButton = container.append('button')
-        .text('🔇 Enable Sound')
-        .style('margin', '8px')
-        .style('padding', '6px 12px')
-        .style('font-size', '14px')
-        .style('cursor', 'pointer')
-        .on('click', () => {
-            if (!soundEnabled) {
-                soundEnabled = true;
-                soundButton.text('🔊 Sound Enabled');
+    .text('🔇 Enable Sound')
+    .style('margin', '8px')
+    .style('padding', '6px 12px')
+    .style('font-size', '14px')
+    .style('cursor', 'pointer')
+    .on('click', async () => {
+        if (!soundEnabled) {
+            // Funcion Enable sound
+            soundEnabled = true;
+            soundButton.text('🔊 Sound Enabled');
 
-                // “Prime” audio files to unlock playback
-                soundPre2020.play().then(() => soundPre2020.pause());
-                soundCovid.play().then(() => soundCovid.pause());
-                soundPost2021.play().then(() => soundPost2021.pause());
-            } else {
-                soundEnabled = false;
-                soundButton.text('🔇 Enable Sound');
+            try {
+                await Promise.all([
+                    soundPre2020.play().then(() => soundPre2020.pause()),
+                    soundCovid.play().then(() => soundCovid.pause()),
+                    soundPost2021.play().then(() => soundPost2021.pause())
+                ]);
+            } catch (err) {
+                console.warn('Autoplay unlock skipped:', err);
             }
-        });
+        } else {
+            soundEnabled = false;
+            soundButton.text('🔇 Enable Sound');
+
+            [soundPre2020, soundCovid, soundPost2021].forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
+        }
+    });
     // Add clip path to confine the drawing area, area does not overlap with y axis labels ;)
     svg.append("clipPath")
         .attr("id", "clip")
@@ -333,10 +346,23 @@ function renderTimeline(monthlyData) {
                 .attr('opacity', 1)
                 .attr('r', 6);
 
-            const sound = getSoundForDate(d.date);
-            sound.currentTime = 0;
-            sound.volume = 0.2;
-            sound.play();
+            if (soundEnabled) {
+                const sound = getSoundForDate(d.date);
+
+                // Detener sonido anterior si sigue activo
+                if (currentSound && !currentSound.paused) {
+                    currentSound.pause();
+                    currentSound.currentTime = 0;
+                }
+
+                // Reproducir nuevo sonido
+                currentSound = sound;
+                currentSound.currentTime = 0;
+                currentSound.volume = 0.25;
+                currentSound.play().catch(err => {
+                    console.warn('Sound play prevented:', err);
+                });
+            }
 
             const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             const monthName = months[d.date.getMonth()];
