@@ -115,7 +115,43 @@ function renderTimeline(monthlyData) {
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
+    
+    //Sound configuracion
 
+    let soundEnabled = false;
+
+    const soundPre2020 = new Audio('sounds/crowd.mp3');
+    const soundCovid = new Audio('sounds/cough.mp3');
+    const soundPost2021 = new Audio('sounds/takeoff.mp3');
+    
+    function getSoundForDate(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        if (year < 2020) return soundPre2020;
+        if (year === 2020 || (year === 2021 && month <= 6)) return soundCovid;
+        return soundPost2021;
+    }
+    //allows to play the sounds 
+    const soundButton = container.append('button')
+        .text('🔇 Enable Sound')
+        .style('margin', '8px')
+        .style('padding', '6px 12px')
+        .style('font-size', '14px')
+        .style('cursor', 'pointer')
+        .on('click', () => {
+            if (!soundEnabled) {
+                soundEnabled = true;
+                soundButton.text('🔊 Sound Enabled');
+
+                // “Prime” audio files to unlock playback
+                soundPre2020.play().then(() => soundPre2020.pause());
+                soundCovid.play().then(() => soundCovid.pause());
+                soundPost2021.play().then(() => soundPost2021.pause());
+            } else {
+                soundEnabled = false;
+                soundButton.text('🔇 Enable Sound');
+            }
+        });
     // Add clip path to confine the drawing area, area does not overlap with y axis labels ;)
     svg.append("clipPath")
         .attr("id", "clip")
@@ -296,6 +332,11 @@ function renderTimeline(monthlyData) {
                 .duration(200)
                 .attr('opacity', 1)
                 .attr('r', 6);
+
+            const sound = getSoundForDate(d.date);
+            sound.currentTime = 0;
+            sound.volume = 0.2;
+            sound.play();
 
             const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             const monthName = months[d.date.getMonth()];
