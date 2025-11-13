@@ -115,9 +115,8 @@ function renderTimeline(monthlyData) {
         .attr('height', height + margin.top + margin.bottom)
         .append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
-    
-    //Sound configuracion
 
+    //Sound configuration
     let soundEnabled = false;
 
     const soundPre2020 = new Audio('sounds/crowd.mp3');
@@ -133,56 +132,49 @@ function renderTimeline(monthlyData) {
         if (year === 2020 || (year === 2021 && month <= 6)) return soundCovid;
         return soundPost2021;
     }
-    //allows to play the sounds 
+
     const soundButton = container.append('button')
-    .text('🔇 Enable Sound')
-    .style('margin', '8px')
-    .style('padding', '6px 12px')
-    .style('font-size', '14px')
-    .style('cursor', 'pointer')
-    .on('click', async () => {
-        if (!soundEnabled) {
-            // Funcion Enable sound
-            soundEnabled = true;
-            soundButton.text('🔊 Sound Enabled');
-
-            try {
-                await Promise.all([
-                    soundPre2020.play().then(() => soundPre2020.pause()),
-                    soundCovid.play().then(() => soundCovid.pause()),
-                    soundPost2021.play().then(() => soundPost2021.pause())
-                ]);
-            } catch (err) {
-                console.warn('Autoplay unlock skipped:', err);
+        .text('🔇 Enable Sound')
+        .style('margin', '8px')
+        .style('padding', '6px 12px')
+        .style('font-size', '14px')
+        .style('cursor', 'pointer')
+        .on('click', async () => {
+            if (!soundEnabled) {
+                soundEnabled = true;
+                soundButton.text('🔊 Sound Enabled');
+                try {
+                    await Promise.all([
+                        soundPre2020.play().then(() => soundPre2020.pause()),
+                        soundCovid.play().then(() => soundCovid.pause()),
+                        soundPost2021.play().then(() => soundPost2021.pause())
+                    ]);
+                } catch (err) {
+                    console.warn('Autoplay unlock skipped:', err);
+                }
+            } else {
+                soundEnabled = false;
+                soundButton.text('🔇 Enable Sound');
+                [soundPre2020, soundCovid, soundPost2021].forEach(a => {
+                    a.pause();
+                    a.currentTime = 0;
+                });
             }
-        } else {
-            soundEnabled = false;
-            soundButton.text('🔇 Enable Sound');
+        });
 
-            [soundPre2020, soundCovid, soundPost2021].forEach(a => {
-                a.pause();
-                a.currentTime = 0;
-            });
-        }
-    });
-    // Add clip path to confine the drawing area, area does not overlap with y axis labels ;)
+    // Add clip path
     svg.append("clipPath")
         .attr("id", "clip")
       .append("rect")
         .attr("width", width)
         .attr("height", height);
 
-    // Parse dates and filter 2015 onwards
+    //Fechas
     const parseDate = d3.timeParse('%Y-%m-%d');
-    const filtered = monthlyData.filter(d => {
-        const year = parseInt(d.date_str.substring(0, 4));
-        return year >= 2015;
-    });
-    filtered.forEach(d => {
-        d.date = parseDate(d.date_str)
-    });
+    const filtered = monthlyData.filter(d => parseInt(d.date_str.substring(0, 4)) >= 2015);
+    filtered.forEach(d => d.date = parseDate(d.date_str));
 
-    // Scales
+    //Escalas
     const x = d3.scaleTime()
         .domain(d3.extent(filtered, d => d.date))
         .range([0, width]);
@@ -191,13 +183,12 @@ function renderTimeline(monthlyData) {
         .domain([0, d3.max(filtered, d => d.cnt_operaciones) * 1.1])
         .range([height, 0]);
 
-    // Color function based on date
+    //Funcion paa dar colores a los puntos
     const getColor = (date) => {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
-
-        if (year < 2020) return '#4fc3f7';
-        if (year === 2020 || (year === 2021 && month <= 6)) return '#ef5350';
+        if (year < 2020 || (year === 2020 && month <= 2)) return '#4fc3f7';
+        if (year === 2020 || (year === 2021 && month <= 6 && month > 2)) return '#ef5350';
         return '#66bb6a';
     };
 
@@ -217,7 +208,7 @@ function renderTimeline(monthlyData) {
         .y1(d => y(d.cnt_operaciones))
         .curve(d3.curveMonotoneX);
 
-    // Gradient
+    //Gradiente
     const gradient = svg.append('defs')
         .append('linearGradient')
         .attr('id', 'area-gradient')
@@ -226,30 +217,23 @@ function renderTimeline(monthlyData) {
         .attr('x2', '0%')
         .attr('y2', '100%');
 
-    gradient.append('stop')
-        .attr('offset', '0%')
-        .attr('stop-color', '#667eea')
-        .attr('stop-opacity', 0.6);
+    gradient.append('stop').attr('offset', '0%').attr('stop-color', '#667eea').attr('stop-opacity', 0.6);
+    gradient.append('stop').attr('offset', '100%').attr('stop-color', '#667eea').attr('stop-opacity', 0.1);
 
-    gradient.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', '#667eea')
-        .attr('stop-opacity', 0.1);
-
-    // clippath to area
+    //Clippath al area
     const areaPath = svg.append('path')
         .datum(filtered)
         .attr('fill', 'url(#area-gradient)')
         .attr('d', area)
         .attr("clip-path", "url(#clip)");
 
-    // Line
+    //Linea
     const line = d3.line()
         .x(d => x(d.date))
         .y(d => y(d.cnt_operaciones))
         .curve(d3.curveMonotoneX);
 
-    // clippath to line
+    //Clippath a Linea
     const linePath = svg.append('path')
         .datum(filtered)
         .attr('fill', 'none')
@@ -258,27 +242,23 @@ function renderTimeline(monthlyData) {
         .attr('d', line)
         .attr("clip-path", "url(#clip)");
 
-    // Axes groups for zoom funcion
+    //Ejes funcion zoom
     const xAxisGroup = svg.append('g')
         .attr('class', 'x-axis')
         .attr('transform', `translate(0,${height})`)
         .call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')))
         .selectAll('text')
         .attr('fill', '#a0a0a0');
-    
-    // separate selection:
-    const xAxis = svg.select('.x-axis');
 
+    const xAxis = svg.select('.x-axis');
     const yAxis = svg.append('g')
         .attr('class', 'y-axis')
         .call(d3.axisLeft(y).ticks(6).tickFormat(d => d >= 1000 ? `${(d/1000).toFixed(0)}k` : d))
         .selectAll('text')
         .attr('fill', '#a0a0a0');
 
-    svg.selectAll('.domain, .tick line')
-        .attr('stroke', '#2a2f4a');
+    svg.selectAll('.domain, .tick line').attr('stroke', '#2a2f4a');
 
-    // Y-axis label
     svg.append('text')
         .attr('transform', 'rotate(-90)')
         .attr('x', -height / 2)
@@ -288,32 +268,64 @@ function renderTimeline(monthlyData) {
         .attr('font-size', '12px')
         .text('Operaciones Mensuales');
 
-    // COVID marker clippath applied (tuve que quitar el texto)
-    const covidDate = new Date('2020-03-01');
-    svg.append('line')
-        .attr('class', 'covid-line')
-        .attr('x1', x(covidDate))
-        .attr('x2', x(covidDate))
+    // Nueva paleta de colores para daltoicos OkabeIto
+    const okabeIto = [
+        "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+        "#0072B2", "#D55E00", "#CC79A7", "#000000"
+    ];
+
+    // Eventos para linea de tempo
+    const events = [
+        { date: new Date('2020-01-01'), label: 'Mayor numero de operaciones PrePandemia', color: okabeIto[0] },
+        { date: new Date('2020-03-01'), label: 'COVID-19 llega a Chile', color: okabeIto[5] },
+        { date: new Date('2020-03-18'), label: 'Cierre Fronteras Aereas', color: okabeIto[4] },
+        { date: new Date('2021-03-24'), label: 'Primera docis de vacunas para el publico general', color: okabeIto[2] },
+        { date: new Date('2023-08-31'), label: 'Fin Emergencia Sanitaria', color: okabeIto[1] },
+        { date: new Date('2024-01-01'), label: 'Mayor numero de operaciones PostPandemia', color: okabeIto[6] }
+    ];
+
+    // Tooltips
+    const eventTooltip = d3.select('body')
+        .append('div')
+        .attr('class', 'tooltip-event')
+        .style('opacity', 0)
+        .style('position', 'absolute')
+        .style('background', '#222')
+        .style('color', '#fff')
+        .style('padding', '6px 10px')
+        .style('border-radius', '4px')
+        .style('pointer-events', 'none');
+
+    // Lineas de eventps
+    const eventLines = svg.selectAll('.event-line')
+        .data(events)
+        .enter()
+        .append('line')
+        .attr('class', 'event-line')
+        .attr('x1', d => x(d.date))
+        .attr('x2', d => x(d.date))
         .attr('y1', 0)
         .attr('y2', height)
-        .attr('stroke', '#ef5350')
-        .attr('stroke-width', 2)
+        .attr('stroke', d => d.color)
+        .attr('stroke-width', 3)
         .attr('stroke-dasharray', '5,5')
         .attr('opacity', 0.8)
-        .attr("clip-path", "url(#clip)");
+        .attr('clip-path', 'url(#clip)')
+        .style('cursor', 'pointer')
+        .on('mouseover', function(event, d) {
+            d3.select(this).attr('stroke-width', 4).attr('opacity', 1);
+            eventTooltip
+                .style('opacity', 1)
+                .html(`<strong>${d.label}</strong>`)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
+        })
+        .on('mouseout', function() {
+            d3.select(this).attr('stroke-width', 3).attr('opacity', 0.8);
+            eventTooltip.style('opacity', 0);
+        });
 
-    svg.append('text')
-        .attr('class', 'covid-text')
-        .attr('x', x(covidDate))
-        .attr('y', -5)
-        .attr('text-anchor', 'middle')
-        .attr('fill', '#ef5350')
-        .attr('font-size', '12px')
-        .attr('font-weight', '600')
-        .text('COVID-19')
-        .attr("clip-path", "url(#clip)");
-
-    // Tooltip
+    //Mantener interactive dots
     const tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0)
@@ -324,7 +336,6 @@ function renderTimeline(monthlyData) {
         .style('border-radius', '4px')
         .style('pointer-events', 'none');
 
-    //Matener interactive dots
     svg.selectAll('.dot')
         .data(filtered)
         .enter()
@@ -340,51 +351,28 @@ function renderTimeline(monthlyData) {
         .attr("clip-path", "url(#clip)")
         .style('cursor', 'pointer')
         .on('mouseover', function(event, d) {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr('opacity', 1)
-                .attr('r', 6);
-
+            d3.select(this).transition().duration(200).attr('opacity', 1).attr('r', 6);
             if (soundEnabled) {
                 const sound = getSoundForDate(d.date);
-
-                // Detener sonido anterior si sigue activo
                 if (currentSound && !currentSound.paused) {
-                    currentSound.pause();
-                    currentSound.currentTime = 0;
+                    currentSound.pause(); currentSound.currentTime = 0;
                 }
-
-                // Reproducir nuevo sonido
-                currentSound = sound;
-                currentSound.currentTime = 0;
-                currentSound.volume = 0.25;
-                currentSound.play().catch(err => {
-                    console.warn('Sound play prevented:', err);
-                });
+                currentSound = sound; currentSound.currentTime = 0; currentSound.volume = 0.25;
+                currentSound.play().catch(err => console.warn('Sound play prevented:', err));
             }
-
-            const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-            const monthName = months[d.date.getMonth()];
-
-            tooltip.html(
-                `<strong>${monthName} ${d.date.getFullYear()}</strong><br/>
-                Operaciones: ${d.cnt_operaciones.toLocaleString()}
-                `)
+            const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+            tooltip.html(`<strong>${months[d.date.getMonth()]} ${d.date.getFullYear()}</strong><br/>
+                          Operaciones: ${d.cnt_operaciones.toLocaleString()}`)
                 .style('opacity', 1)
                 .style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY - 28) + 'px');
         })
         .on('mouseout', function() {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr('opacity', 0)
-                .attr('r', 4);
+            d3.select(this).transition().duration(200).attr('opacity', 0).attr('r', 4);
             tooltip.style('opacity', 0);
         });
 
-    // Zoom behavior
+    // Acciones de zoom
     const zoom = d3.zoom()
         .scaleExtent([1, 20])
         .translateExtent([[0, 0], [width, height]])
@@ -396,36 +384,28 @@ function renderTimeline(monthlyData) {
         .attr('height', height)
         .style('fill', 'none')
         .style('pointer-events', 'all')
-        .lower(); // send behind other elements
+        .lower();
 
     svg.call(zoom);
 
     function zoomed(event) {
         const transform = event.transform;
         const newX = transform.rescaleX(x);
-
-        // Mover Axis respecto a zoom
         xAxis.call(d3.axisBottom(newX).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')));
 
-        // Mover raya COVID
-        svg.select('line.covid-line')
-            .attr('x1', newX(covidDate))
-            .attr('x2', newX(covidDate));
-
-        svg.select('text.covid-text')
-            .attr('x', newX(covidDate));
-
-        // Mover elementos para X
         linePath.attr('d', line.x(d => newX(d.date)));
         areaPath.attr('d', area.x(d => newX(d.date)));
 
-        // Puntos posicion new
         svg.selectAll('.dot')
             .attr('cx', d => newX(d.date))
             .attr('cy', d => y(d.cnt_operaciones));
+
+        // Movimiento lineas de tiempo con zoo
+        svg.selectAll('.event-line')
+            .attr('x1', d => newX(d.date))
+            .attr('x2', d => newX(d.date));
     }
 
-    // Reset posicion
     container.append('button')
         .text('Reset Zoom')
         .style('margin-top', '10px')
@@ -441,86 +421,129 @@ function renderTimeline(monthlyData) {
         });
 }
 
+
 function renderComparisonBars(airports) {
+    // Paleta para daltonikos Okabe Ito
+    const okabeIto = {
+        2015: "#E69F00", // naranja
+        2019: "#56B4E9", // azul
+        2020: "#D55E00", // rojo
+        2024: "#009E73", // verde
+        2025: "#CC79A7"  // magenta
+    };
+
+    // Tooltip
+    const tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip-bar")
+        .style("opacity", 0)
+        .style("position", "absolute")
+        .style("background", "#222")
+        .style("color", "#fff")
+        .style("padding", "6px 10px")
+        .style("border-radius", "4px")
+        .style("font-size", "0.8rem")
+        .style("pointer-events", "none");
+
     // Sort by 2019 volume and take top 20
     const airportsWithData = airports.filter(a => a.years[2019]);
     const top20 = airportsWithData
         .sort((a, b) => b.years[2019].operations - a.years[2019].operations)
         .slice(0, 20);
-    
+
     const max2019 = d3.max(top20, a => a.years[2019].operations);
-    
-    // Render for each year
+
+    // Render for year
     [2015, 2019, 2020, 2024, 2025].forEach(year => {
-        
+
         const container = d3.select(`#bars-${year}`);
-        
+
+        container.selectAll('*').remove();
+
         top20.forEach(airport => {
             const data = airport.years[year];
-            
+
+            const barDiv = container.append("div").attr("class", "airport-bar");
+
+            const label = barDiv.append("div").attr("class", "airport-label");
+            label.append("span")
+                .style("font-weight", "600")
+                .text(airport.oaci);
+
+            const rightLabel = label.append("span");
+
             if (!data) {
-                // Show empty/no data bar
-                const barDiv = container.append('div')
-                    .attr('class', 'airport-bar');
-                
-                const label = barDiv.append('div')
-                    .attr('class', 'airport-label');
-                
-                label.append('span')
-                    .style('font-weight', '600')
-                    .text(airport.oaci);
-                
-                label.append('span')
-                    .style('color', '#555')
-                    .style('font-size', '0.75rem')
-                    .text('sin datos');
-                
-                barDiv.append('div')
-                    .attr('class', 'bar-bg')
-                    .append('div')
-                    .attr('class', `bar-fill bar-${year}`)
-                    .style('width', '0%')
-                    .style('opacity', '0.3');
-                
+                rightLabel.append("span")
+                    .style("color", "#777")
+                    .style("font-size", "0.75rem")
+                    .text("sin datos");
+                barDiv.append("div")
+                    .attr("class", "bar-bg")
+                    .append("div")
+                    .attr("class", `bar-fill bar-${year}`)
+                    .style("background-color", "#555")
+                    .style("width", "0%")
+                    .style("opacity", "0.3");
                 return;
             }
-            
+
             const pct = (data.operations / max2019) * 100;
-            
-            const barDiv = container.append('div')
-                .attr('class', 'airport-bar');
-            
-            const label = barDiv.append('div')
-                .attr('class', 'airport-label');
-            
-            label.append('span')
-                .style('font-weight', '600')
-                .text(airport.oaci);
-            
-            const rightLabel = label.append('span');
-            rightLabel.append('span')
-                .style('color', '#a0a0a0')
-                .style('font-size', '0.8rem')
+            const pctText = data.pct_of_2019 ? `${data.pct_of_2019.toFixed(0)}%` : "";
+
+            rightLabel.append("span")
+                .style("color", "#a0a0a0")
+                .style("font-size", "0.8rem")
                 .text(data.operations.toLocaleString());
-            
+
             if (year !== 2019 && data.pct_of_2019) {
-                rightLabel.append('span')
-                    .style('margin-left', '8px')
-                    .style('color', data.pct_of_2019 >= 100 ? '#66bb6a' : '#ffa726')
-                    .style('font-weight', '600')
-                    .text(`${data.pct_of_2019.toFixed(0)}%`);
+                rightLabel.append("span")
+                    .style("margin-left", "8px")
+                    .style("color", data.pct_of_2019 >= 100 ? "#66bb6a" : "#ffa726")
+                    .style("font-weight", "600")
+                    .text(pctText);
             }
-            
-            const barBg = barDiv.append('div')
-                .attr('class', 'bar-bg');
-            
-            barBg.append('div')
-                .attr('class', `bar-fill bar-${year}`)
-                .style('width', '0%')
-                .transition()
+            //Inento de hacerlo mas agradeble a la vista y contexto
+            const barBg = barDiv.append("div").attr("class", "bar-bg");
+
+            const barFill = barBg.append("div")
+                .attr("class", `bar-fill bar-${year}`)
+                .style("background-color", okabeIto[year] || "#999")
+                .style("width", "0%")
+                .style("cursor", "pointer")
+                .on("mouseover", function (event) {
+                    d3.select(this)
+                        .transition().duration(200)
+                        .style("opacity", 1)
+                        .style("transform", "scaleY(1.1)");
+
+                    tooltip.transition().duration(200).style("opacity", 1);
+                    tooltip.html(`
+                        <strong>${airport.oaci}</strong><br/>
+                        <span style="color:${okabeIto[year]}">${year}</span><br/>
+                        Operaciones: ${data.operations.toLocaleString()}<br/>
+                        ${data.pct_of_2019 ? `(${data.pct_of_2019.toFixed(1)}% de 2019)` : ""}
+                    `)
+                        .style("left", (event.pageX + 12) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mousemove", function (event) {
+                    tooltip.style("left", (event.pageX + 12) + "px")
+                           .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                        .transition().duration(200)
+                        .style("opacity", 0.85)
+                        .style("transform", "scaleY(1)");
+                    tooltip.transition().duration(200).style("opacity", 0);
+                });
+
+            // Animación de llenado por experimentar
+            barFill.transition()
                 .duration(1000)
-                .delay((i, j) => top20.indexOf(airport) * 30)
-                .style('width', pct + '%');
+                .delay(top20.indexOf(airport) * 30)
+                .style("width", pct + "%")
+                .style("opacity", 0.85);
         });
     });
 }
