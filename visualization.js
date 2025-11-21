@@ -419,6 +419,29 @@ function renderTimeline(monthlyData) {
                 d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
             );
         });
+
+        window.zoomToRange = function(startYear, endYear) {
+
+            const start = new Date(startYear, 0, 1);
+            const end = new Date(endYear, 11, 31);
+            
+            if (startYear > 2025 || startYear < 2015 || endYear > 2025 || endYear < 2015 ) {
+                console.warn("Años fuera de la escala:", startYear, endYear);
+                return;
+            }
+
+            const newScale = width / (x(end) - x(start));
+
+            const tx = -x(start) * newScale;
+
+            const t = d3.zoomIdentity
+                .translate(tx, 0)
+                .scale(newScale);
+
+            svg.transition()
+                .duration(1000)
+                .call(zoom.transform, t);
+        };
 }
 
 

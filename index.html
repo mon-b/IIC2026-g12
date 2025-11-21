@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impacto del COVID-19 en la Aviación Chilena</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Librerías para tus visualizaciones -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Librerías js-aruco2 -->
+    <script src="cv.js"></script>
+    <script src="aruco.js"></script>
+
+    <style>
+        #canvas {
+            border: 1px solid #666;
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -14,23 +28,16 @@
             <p class="subtitle">Cómo COVID-19 devastó el tráfico aéreo y el camino desigual de regreso</p>
         </header>
 
+        <!-- === Tus secciones originales === -->
         <div class="section">
             <h2 class="section-title">Línea de Tiempo: Operaciones Mensuales Nacionales</h2>
             <p class="section-subtitle">De crecimiento sostenido (2015-2019) al colapso abrupto en marzo 2020</p>
             <div id="timeline"></div>
+
             <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #4fc3f7;"></div>
-                    <span>Crecimiento Pre-COVID (2015-2019)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ef5350;"></div>
-                    <span>Colapso (2020-2021)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #66bb6a;"></div>
-                    <span>Recuperación (2021-2025)</span>
-                </div>
+                <div class="legend-item"><div class="legend-color" style="background: #4fc3f7;"></div><span>Crecimiento Pre-COVID (2015-2019)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #ef5350;"></div><span>Colapso (2020-2021)</span></div>
+                <div class="legend-item"><div class="legend-color" style="background: #66bb6a;"></div><span>Recuperación (2021-2025)</span></div>
             </div>
         </div>
 
@@ -42,31 +49,156 @@
         <div class="section">
             <h2 class="section-title">Aeropuerto por Aeropuerto: La Recuperación Desigual</h2>
             <p class="section-subtitle">Top 20 aeropuertos según volumen 2019 — mostrando evolución desde 2015</p>
+
             <div id="comparison-grid">
-                <div class="year-panel year-2015">
-                    <h3>2015: Línea Base</h3>
-                    <div class="airport-bars" id="bars-2015"></div>
-                </div>
-                <div class="year-panel year-2019">
-                    <h3>2019: Pre-COVID</h3>
-                    <div class="airport-bars" id="bars-2019"></div>
-                </div>
-                <div class="year-panel year-2020">
-                    <h3>2020: Colapso</h3>
-                    <div class="airport-bars" id="bars-2020"></div>
-                </div>
-                <div class="year-panel year-2024">
-                    <h3>2024: Recuperación</h3>
-                    <div class="airport-bars" id="bars-2024"></div>
-                </div>
-                <div class="year-panel year-2025">
-                    <h3>2025: Actual</h3>
-                    <div class="airport-bars" id="bars-2025"></div>
-                </div>
+                <div class="year-panel year-2015"><h3>2015: Línea Base</h3><div class="airport-bars" id="bars-2015"></div></div>
+                <div class="year-panel year-2019"><h3>2019: Pre-COVID</h3><div class="airport-bars" id="bars-2019"></div></div>
+                <div class="year-panel year-2020"><h3>2020: Colapso</h3><div class="airport-bars" id="bars-2020"></div></div>
+                <div class="year-panel year-2024"><h3>2024: Recuperación</h3><div class="airport-bars" id="bars-2024"></div></div>
+                <div class="year-panel year-2025"><h3>2025: Actual</h3><div class="airport-bars" id="bars-2025"></div></div>
             </div>
         </div>
     </div>
 
+    <!-- Archivo de visualización -->
     <script src="visualization.js"></script>
+
+    <!-- === SECCIÓN AR: Cámara + Canvas === -->
+    <center>
+        <h2>Detector AR (js-aruco2)</h2>
+
+        <video id="video" width="320" height="240" autoplay playsinline style="display:none;"></video>
+        <canvas id="canvas" width="960" height="640"></canvas>
+
+        <p><strong>Powered by js-aruco2</strong></p>
+    </center>
+
+
+    <!-- === LÓGICA AR COMPLETAMENTE CORREGIDA CON INTEGRACIÓN === -->
+    <script>
+        let video, canvas, context;
+        let detector;
+        let imageData;
+
+        let lastTrigger = 0; // Anti-spam: tiempo mínimo entre activaciones
+
+        window.onload = function () {
+            video = document.getElementById("video");
+            canvas = document.getElementById("canvas");
+            context = canvas.getContext("2d");
+
+            detector = new AR.Detector();
+            startCamera();
+        };
+
+        // Iniciar cámara
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                    requestAnimationFrame(tick);
+                })
+                .catch(err => console.error("Error cámara:", err));
+        }
+
+        // Bucle principal
+        function tick() {
+            requestAnimationFrame(tick);
+
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                drawFrame();
+                detectMarkers();
+            }
+        }
+
+        // Dibujar frame actual
+        function drawFrame() {
+            context.drawImage(video, 0, 0, 320, 240);
+            imageData = context.getImageData(0, 0, 320, 240);
+        }
+
+        // Detectar los marcadores AR
+        function detectMarkers() {
+            const markers = detector.detect(imageData);
+
+            drawMarkers(markers);
+            drawMarkerIds(markers);
+
+            // LLama zoom
+            reactToMarkers(markers);
+        }
+
+        function drawMarkers(markers) {
+            context.lineWidth = 3;
+            context.strokeStyle = "red";
+
+            markers.forEach(marker => {
+                const corners = marker.corners;
+                context.beginPath();
+                for (let i = 0; i < corners.length; i++) {
+                    let c = corners[i];
+                    let next = corners[(i + 1) % corners.length];
+                    context.moveTo(c.x, c.y);
+                    context.lineTo(next.x, next.y);
+                }
+                context.stroke();
+            });
+        }
+
+        function drawMarkerIds(markers) {
+            context.font = "18px Arial";
+            context.fillStyle = "blue";
+
+            markers.forEach(marker => {
+                const xs = marker.corners.map(c => c.x);
+                const ys = marker.corners.map(c => c.y);
+                const x = Math.min(...xs);
+                const y = Math.min(...ys);
+                context.fillText("ID: " + marker.id, x + 5, y - 5);
+            });
+        }
+
+        let markerYears = {
+            15: 2015,
+            16: 2016,
+            17: 2017,
+            18: 2018,
+            19: 2019,
+            20: 2020,
+            21: 2021,
+            22: 2022,
+            23: 2023,
+            24: 2024,
+            25: 2025
+        };
+
+        function reactToMarkers(markers) {
+            let now = Date.now();
+            if (markers.length === 0) return;
+            if (markers.length === 1) {
+                markers.forEach(marker => {
+
+                    if (now - lastTrigger < 1200) return;
+                    lastTrigger = now;
+
+                    console.log("Marcador detectado:", marker.id);
+
+                    if (window.zoomToRange) window.zoomToRange(markerYears[marker.id], markerYears[marker.id]); 
+                    return;
+                })
+            }
+            const years = markers
+                .map(m => markerYears[m.id])
+                .filter(y => y !== undefined);
+            
+            const minYear = Math.min(...years);
+            const maxYear = Math.max(...years);
+
+            console.log(`→ Zoom al rango: ${minYear} - ${maxYear}`);
+            window.zoomToRange(minYear, maxYear);
+            return;
+        }
+    </script>
+
 </body>
 </html>
