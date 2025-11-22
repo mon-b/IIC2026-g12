@@ -122,6 +122,8 @@ function renderTimeline(monthlyData) {
     const soundPre2020 = new Audio('sounds/crowd.mp3');
     const soundCovid = new Audio('sounds/cough.mp3');
     const soundPost2021 = new Audio('sounds/takeoff.mp3');
+    const soundZoomRange = new Audio('sounds/zoosound.mp3');
+
 
     let currentSound = null;
 
@@ -441,6 +443,16 @@ function renderTimeline(monthlyData) {
             svg.transition()
                 .duration(1000)
                 .call(zoom.transform, t);
+            
+            if (soundEnabled) {
+                try {
+                    soundZoomRange.currentTime = 0;
+                    soundZoomRange.volume = 0.4;
+                    soundZoomRange.play();
+                } catch(err) {
+                    console.warn("ZoomRange sound prevented:", err);
+                }
+            }
         };
 }
 
