@@ -172,13 +172,24 @@
             25: 2025
         };
 
+        let previousMarkersCount = 0;
+
         function reactToMarkers(markers) {
             let now = Date.now();
-            if (markers.length === 0) return;
+            if (now - lastTrigger < 1200) return;
+            if (markers.length === 0) {
+                previousMarkersCount = 0;
+                return;
+            }
+            if (previousMarkersCount === 2 && markers.length === 1) {
+                previousMarkersCount = 1;
+                return;
+            }
             if (markers.length === 1) {
                 markers.forEach(marker => {
 
                     if (now - lastTrigger < 1200) return;
+                    previousMarkersCount = 1;
                     lastTrigger = now;
 
                     console.log("Marcador detectado:", marker.id);
@@ -196,6 +207,8 @@
 
             console.log(`→ Zoom al rango: ${minYear} - ${maxYear}`);
             window.zoomToRange(minYear, maxYear);
+            previousMarkersCount = 2;
+            lastTrigger = now;
             return;
         }
     </script>
